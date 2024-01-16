@@ -46,7 +46,7 @@ public class ZoomVideo extends CordovaPlugin {
             this.sessionName = args.getString(2);
             this.sessionKey = args.getString(3);
             this.userIdentity = args.getString(4);
-            this.roleType = 1;
+            this.roleType = args.getInt(5);
 
             final String sdkKey = this.sdkKey;
             final String sdkSecret = this.sdkSecret;
@@ -86,7 +86,7 @@ public class ZoomVideo extends CordovaPlugin {
         state.putString("sdkKey", this.sdkKey);
         state.putString("sdkSecret", this.sdkSecret);
         state.putString("sessionName", this.sessionName);
-        state.putString("roleType", String.valueOf(this.roleType));
+        state.putInt("roleType", this.roleType);
         state.putString("sessionKey", this.sessionKey);
         state.putString("userIdentity", this.userIdentity);
         return state;
@@ -96,7 +96,7 @@ public class ZoomVideo extends CordovaPlugin {
         this.sdkKey = state.getString("sdkKey");
         this.sdkSecret = state.getString("sdkSecret");
         this.sessionName = state.getString("sessionName");
-        this.roleType = Integer.parseInt(state.getString("roleType"));
+        this.roleType = state.getInt("roleType");
         this.sessionKey = state.getString("sessionKey");
         this.userIdentity = state.getString("userIdentity");
         this.callbackContext = callbackContext;
