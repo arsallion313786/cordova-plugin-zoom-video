@@ -62,4 +62,39 @@
 
         <framework src="src/android/zoomvideo.gradle" type="gradleReference" custom="true" />
     </platform> 
+
+    <platform name="ios">
+        <source-file src="src/ios/zoom-video.swift"/>
+
+        <config-file parent="ENABLE_BITCODE" target="build.xcconfig">
+            <false/>
+        </config-file>
+
+        <preference name="CAMERA_USAGE_DESCRIPTION" default="Required to allow video call functionality" />
+        <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+            <string>$CAMERA_USAGE_DESCRIPTION</string>
+        </config-file>
+
+        <preference name="MICROFONE_USAGE_DESCRIPTION" default="Required to allow video call functionality" />
+        <config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">
+            <string>$MICROFONE_USAGE_DESCRIPTION</string>
+        </config-file>
+
+        <preference name="PHOTOLIB_USAGE_DESCRIPTION" default="Required to allow video call functionality" />
+        <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
+            <string>$PHOTOLIB_USAGE_DESCRIPTION</string>
+        </config-file>
+
+        <preference name="BLUETOOTH_USAGE_DESCRIPTION" default="Required to allow video call functionality" />
+        <config-file target="*-Info.plist" parent="NSBluetoothPeripheralUsageDescription">
+            <string>$BLUETOOTH_USAGE_DESCRIPTION</string>
+        </config-file>
+        
+        <config-file target="config.xml" parent="/*">
+            <feature name="ZoomVideo">
+                <param name="ios-package" value="ZoomVideo"/>
+            </feature>
+        </config-file>
+        <framework src="src/ios/ZoomVideoSDK.xcframework" custom="true"  embed="true"/>
+    </platform>
 </plugin>
