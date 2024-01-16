@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova.plugin.zoomvideo" version="1.0.0">
+
+    <name>Zoom Video SDK Plugin</name>
+    <description>Plugin to integrate the Zoom Video SDK with Android and iOS</description>
+    <author>Truewind</author>
+    <license>Apache 2.0 License</license>
+
+    <js-module name="ZoomVideo" src="www/ZoomVideo.js">
+        <clobbers target="cordova.plugins.ZoomVideo" />
+    </js-module>
+
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="ZoomVideo">
+                <param name="android-package" value="cordova.plugin.zoomvideo.ZoomVideo" />
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.CAMERA" />
+            <uses-permission android:name="android.permission.RECORD_AUDIO" />
+            <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+            <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity 
+                android:name="cordova.plugin.zoomvideo.SessionActivity"
+                android:configChanges="orientation|screenSize" 
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            </activity>
+        </config-file>
+        
+        <resource-file src="libs/android/mobilertc.aar" target="libs/mobilertc.aar" />
+
+        <resource-file src="src/android/res/drawable/ic_call_black_24dp.xml" target="res/drawable/ic_call_black_24dp.xml" />
+        <resource-file src="src/android/res/drawable/ic_call_end_white_24px.xml" target="res/drawable/ic_call_end_white_24px.xml" />
+        <resource-file src="src/android/res/drawable/ic_call_white_24px.xml" target="res/drawable/ic_call_white_24px.xml" />
+        <resource-file src="src/android/res/drawable/ic_mic_green_24px.xml" target="res/drawable/ic_mic_green_24px.xml" />
+        <resource-file src="src/android/res/drawable/ic_mic_off_red_24px.xml" target="res/drawable/ic_mic_off_red_24px.xml" />
+        <resource-file src="src/android/res/drawable/ic_switch_camera_512dp.xml" target="res/drawable/ic_switch_camera_512dp.xml" />
+        <resource-file src="src/android/res/drawable/ic_videocam_green_24px.xml" target="res/drawable/ic_videocam_green_24px.xml" />
+        <resource-file src="src/android/res/drawable/ic_videocam_off_red_24px.xml" target="res/drawable/ic_videocam_off_red_24px.xml" />
+        <resource-file src="src/android/res/drawable/ic_volume_down_green_24px.xml" target="res/drawable/ic_volume_down_green_24px.xml" />
+        <resource-file src="src/android/res/drawable/ic_volume_down_white_24px.xml" target="res/drawable/ic_volume_down_white_24px.xml" />
+
+        <resource-file src="src/android/res/layout/activity_video.xml" target="res/layout/activity_video.xml" />
+        <resource-file src="src/android/res/layout/content_video.xml" target="res/layout/content_video.xml" />
+      
+        <resource-file src="src/android/res/values/colors.xml" target="res/values/twilio_colors.xml" />
+        <resource-file src="src/android/res/values/dimens.xml" target="res/values/dimens.xml" />
+        <resource-file src="src/android/res/values/strings.xml" target="res/values/strings.xml" />
+        <resource-file src="src/android/res/values/styles.xml" target="res/values/styles.xml" />
+
+        <resource-file src="src/android/res/values-v21/styles.xml" target="res/values-v21/styles.xml" />
+        <resource-file src="src/android/res/values-w820dp/dimens.xml" target="res/values-w820dp/dimens.xml" />
+
+        <source-file src="src/android/SessionActivity.java" target-dir="src/cordova/plugin/zoomvideo" />
+        <source-file src="src/android/ZoomVideo.java" target-dir="src/cordova/plugin/zoomvideo" />
+
+        <framework src="src/android/zoomvideo.gradle" type="gradleReference" custom="true" />
+    </platform> 
+</plugin>
