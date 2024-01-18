@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jSN-F6-Q4K">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jSN-F6-Q4K">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Twilio Video View Controller-->
+        <!--Video View Controller-->
         <scene sceneID="nZR-qd-fY9">
             <objects>
-                <viewController storyboardIdentifier="TwilioVideoViewController" id="jSN-F6-Q4K" customClass="TwilioVideoViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="jSN-F6-Q4K" customClass="VideoViewController" customModule="HelloCordova" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8oD-ke-cGW"/>
                         <viewControllerLayoutGuide type="bottom" id="tZu-uw-hgi"/>
@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ebq-ja-6iU">
-                                <rect key="frame" x="0.0" y="44" width="375" height="0.0"/>
+                                <rect key="frame" x="0.0" y="50" width="375" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -35,14 +35,11 @@
                                 <state key="normal">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="disconnectButtonPressed:" destination="jSN-F6-Q4K" eventType="touchUpInside" id="ekH-u1-k6a"/>
-                                </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_end_call_120.png" translatesAutoresizingMaskIntoConstraints="NO" id="vyY-KP-Qmu">
                                 <rect key="frame" x="314" y="718" width="30" height="30"/>
                             </imageView>
-                            <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="hJ3-NM-pz1" customClass="TVIVideoView">
+                            <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="hJ3-NM-pz1">
                                 <rect key="frame" x="20" y="618" width="120" height="120"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -52,22 +49,19 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XFY-jj-EdK" userLabel="Flip Camera Button">
-                                <rect key="frame" x="97.666666666666671" y="49" width="40.000000000000014" height="40"/>
+                                <rect key="frame" x="97.666666666666671" y="55" width="40.000000000000014" height="40"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="XFY-jj-EdK" secondAttribute="height" multiplier="1:1" id="W3X-hI-9In"/>
                                     <constraint firstAttribute="height" constant="40" id="dm3-2X-JGF"/>
                                 </constraints>
                                 <state key="normal" backgroundImage="icon_button_background.png"/>
-                                <connections>
-                                    <action selector="flipcameraButtonPressed:" destination="jSN-F6-Q4K" eventType="touchDown" id="hBg-o8-0Zp"/>
-                                </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_switch_cam_114.png" translatesAutoresizingMaskIntoConstraints="NO" id="VJy-1y-iO7">
-                                <rect key="frame" x="104.66666666666667" y="56" width="26.000000000000014" height="26"/>
+                                <rect key="frame" x="104.66666666666667" y="62" width="26.000000000000014" height="26"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rwp-9E-VzS" userLabel="Mic Button">
-                                <rect key="frame" x="237.66666666666663" y="49" width="40" height="40"/>
+                                <rect key="frame" x="237.66666666666663" y="55" width="40" height="40"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Bxc-aZ-Tmq"/>
@@ -79,14 +73,12 @@
                                 </state>
                                 <state key="disabled" image="ic_mic_off_40.png"/>
                                 <state key="selected" image="ic_mic_off_114.png" backgroundImage="icon_button_background.png"/>
-                                <connections>
-                                    <action selector="micButtonPressed:" destination="jSN-F6-Q4K" eventType="touchUpInside" id="6Tr-Cb-Rmf"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GWl-Vi-FFQ" userLabel="Video Button">
-                                <rect key="frame" x="167.66666666666666" y="49" width="40" height="40"/>
+                                <rect key="frame" x="167.66666666666666" y="55" width="40" height="40"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" secondItem="GWl-Vi-FFQ" secondAttribute="height" multiplier="1:1" id="6Bc-ko-OaA"/>
                                     <constraint firstAttribute="height" constant="40" id="hze-qQ-kzY"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -95,16 +87,14 @@
                                 </state>
                                 <state key="disabled" image="ic_mic_off_40.png"/>
                                 <state key="selected" image="ic_video_off_114.png" backgroundImage="icon_button_background.png"/>
-                                <connections>
-                                    <action selector="videoButtonPressed:" destination="jSN-F6-Q4K" eventType="touchUpInside" id="WfG-5r-c5E"/>
-                                </connections>
                             </button>
-                            <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="GF5-wM-2Yt" customClass="TVIVideoView">
+                            <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="GF5-wM-2Yt">
                                 <rect key="frame" x="20" y="490" width="120" height="120"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" priority="900" constant="120" id="Nqo-q4-NeO"/>
                                     <constraint firstAttribute="width" secondItem="GF5-wM-2Yt" secondAttribute="height" multiplier="1:1" id="fiF-50-tgj"/>
+                                    <constraint firstAttribute="width" secondItem="GF5-wM-2Yt" secondAttribute="height" multiplier="1:1" id="hcf-A6-jOi"/>
                                     <constraint firstAttribute="height" priority="900" constant="120" id="kVt-hW-W1V"/>
                                 </constraints>
                             </view>
@@ -112,7 +102,6 @@
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="vyY-KP-Qmu" firstAttribute="top" secondItem="krA-sT-Z3g" secondAttribute="top" constant="10" id="1jD-V0-hKC"/>
-                            <constraint firstItem="GWl-Vi-FFQ" firstAttribute="width" secondItem="GWl-Vi-FFQ" secondAttribute="height" multiplier="1:1" id="6Bc-ko-OaA"/>
                             <constraint firstItem="vyY-KP-Qmu" firstAttribute="leading" secondItem="krA-sT-Z3g" secondAttribute="leading" constant="10" id="7Ak-iN-PVo"/>
                             <constraint firstItem="XFY-jj-EdK" firstAttribute="top" secondItem="8oD-ke-cGW" secondAttribute="bottom" constant="5" id="8fC-Cc-J9Z"/>
                             <constraint firstItem="VJy-1y-iO7" firstAttribute="leading" secondItem="XFY-jj-EdK" secondAttribute="leading" constant="7" id="8jg-sS-1w6"/>
@@ -128,7 +117,6 @@
                             <constraint firstItem="GWl-Vi-FFQ" firstAttribute="top" secondItem="8oD-ke-cGW" secondAttribute="bottom" constant="5" id="am3-N1-crp"/>
                             <constraint firstItem="GF5-wM-2Yt" firstAttribute="leading" secondItem="3Bh-pO-6uY" secondAttribute="leadingMargin" constant="4" id="dGd-kX-YBv"/>
                             <constraint firstAttribute="trailing" secondItem="ebq-ja-6iU" secondAttribute="trailing" id="eiL-ob-cD1"/>
-                            <constraint firstItem="GF5-wM-2Yt" firstAttribute="width" secondItem="GF5-wM-2Yt" secondAttribute="height" multiplier="1:1" id="hcf-A6-jOi"/>
                             <constraint firstItem="vyY-KP-Qmu" firstAttribute="bottom" secondItem="krA-sT-Z3g" secondAttribute="bottom" constant="-10" id="iAE-L3-Kyn"/>
                             <constraint firstItem="VJy-1y-iO7" firstAttribute="top" secondItem="XFY-jj-EdK" secondAttribute="top" constant="7" id="ikI-le-LS4"/>
                             <constraint firstItem="GWl-Vi-FFQ" firstAttribute="leading" secondItem="XFY-jj-EdK" secondAttribute="trailing" constant="30" id="mW3-pj-i1X"/>
@@ -141,15 +129,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="disconnectButton" destination="krA-sT-Z3g" id="uQu-1U-Ree"/>
-                        <outlet property="flipCameraButton" destination="XFY-jj-EdK" id="4z3-Ad-GTA"/>
-                        <outlet property="messageLabel" destination="ebq-ja-6iU" id="yjH-dj-KgF"/>
-                        <outlet property="micButton" destination="rwp-9E-VzS" id="SW4-po-OHw"/>
-                        <outlet property="middleButtonCenterXConstraint" destination="DZ4-5p-o4h" id="tkY-dY-nRl"/>
-                        <outlet property="previewView" destination="hJ3-NM-pz1" id="1kY-rd-tEJ"/>
-                        <outlet property="remoteView2" destination="GF5-wM-2Yt" id="5lf-Td-f92"/>
-                        <outlet property="switchCamImage" destination="VJy-1y-iO7" id="Keg-mR-4gl"/>
-                        <outlet property="videoButton" destination="GWl-Vi-FFQ" id="AEz-IS-ciy"/>
+                        <outlet property="mainView" destination="3Bh-pO-6uY" id="kqW-Ye-nX3"/>
+                        <outlet property="secondPreview" destination="GF5-wM-2Yt" id="cht-dW-IcZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JfB-JL-3y4" sceneMemberID="firstResponder"/>

@@ -64,7 +64,9 @@
     </platform> 
 
     <platform name="ios">
-        <source-file src="src/ios/zoom-video.swift"/>
+        <source-file src="src/ios/ZoomVideo.swift"/>
+        <source-file src="src/ios/VideoViewController.swift"/>
+        <source-file src="src/ios/VideoManager.swift"/>
 
         <config-file parent="ENABLE_BITCODE" target="build.xcconfig">
             <false/>
@@ -89,12 +91,28 @@
         <config-file target="*-Info.plist" parent="NSBluetoothPeripheralUsageDescription">
             <string>$BLUETOOTH_USAGE_DESCRIPTION</string>
         </config-file>
-        
+
         <config-file target="config.xml" parent="/*">
             <feature name="ZoomVideo">
                 <param name="ios-package" value="ZoomVideo"/>
             </feature>
         </config-file>
         <framework src="src/ios/ZoomVideoSDK.xcframework" custom="true"  embed="true"/>
+        <framework src="src/ios/ZoomVideoSDKUIToolkit.xcframework" custom="true"  embed="true"/>
+
+
+		<resource-file src="src/ios/Resources/TwilioVideo.storyboard" target="Resources/TwilioVideo.storyboard" />
+        <resource-file src="src/ios/Resources/end-call-ios-white-33px.png" target="Resources/end-call-ios-white-33px.png" />
+		<resource-file src="src/ios/Resources/ic_end_call_114.png" target="Resources/ic_end_call_114.png" />
+        <resource-file src="src/ios/Resources/ic_end_call_120.png" target="Resources/ic_end_call_120.png" />
+		<resource-file src="src/ios/Resources/ic_mic_off_114.png" target="Resources/ic_mic_off_114.png" />
+		<resource-file src="src/ios/Resources/ic_mic_on_114.png" target="Resources/ic_mic_on_114.png" />
+		<resource-file src="src/ios/Resources/ic_switch_cam_114.png" target="Resources/ic_switch_cam_114.png" />
+		<resource-file src="src/ios/Resources/ic_video_off_114.png" target="Resources/ic_video_off_114.png" />
+		<resource-file src="src/ios/Resources/ic_video_on_114.png" target="Resources/ic_video_on_114.png" />
+		<resource-file src="src/ios/Resources/icon_button_background.png" target="Resources/icon_button_background.png" />
+        <resource-file src="src/ios/Resources/no-video-ios-white-33px.png" target="Resources/no-video-ios-white-33px.png" />
+        <resource-file src="src/ios/Resources/no-mic-ios-white-33px.png" target="Resources/no-mic-ios-white-33px.png" />
+        <resource-file src="src/ios/Resources/switch-camera-ios-white-33px.png" target="Resources/switch-camera-ios-white-33px.png" />
     </platform>
 </plugin>
