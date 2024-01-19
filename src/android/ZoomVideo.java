@@ -16,12 +16,10 @@ public class ZoomVideo extends CordovaPlugin {
     private CallbackContext callbackContext;
     private CordovaInterface cordova;
 
-    private String sdkKey;
-    private String sdkSecret;
+    private String jwtToken;
     private String sessionName;
-    private int roleType;
-    private String sessionKey;
-    private String userIdentity;
+    private String userName;
+    private String domain;
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -41,37 +39,24 @@ public class ZoomVideo extends CordovaPlugin {
     private void openSession(final JSONArray args) {
 
         try {
-            this.sdkKey = args.getString(0);
-            this.sdkSecret = args.getString(1);
-            this.sessionName = args.getString(2);
-            this.sessionKey = args.getString(3);
-            this.userIdentity = args.getString(4);
-            this.roleType = args.getInt(5);
+            this.jwtToken = args.getString(0);
+            this.sessionName = args.getString(1);
+            this.userName = args.getString(2);
+            this.domain = args.getString(3);
 
-            final String sdkKey = this.sdkKey;
-            final String sdkSecret = this.sdkSecret;
+            final String jwtToken = this.jwtToken;
             final String sessionName = this.sessionName;
-            final String sessionKey = this.sessionKey;
-            final String userIdentity = this.userIdentity;
-            final int roleType = this.roleType;
-
-            LOG.d("SDK KEY", sdkKey);
-            LOG.d("SDK SECRET", sdkSecret);
-            LOG.d("SESSION NAME", sessionName);
-            LOG.d("SESSION KEY", sessionKey);
-            LOG.d("SESSION IDENTITY", userIdentity);
-            LOG.d("ROLE TYPE", String.valueOf(roleType));
+            final String userName = this.userName;
+            final String domain = this.domain;
 
             final CordovaPlugin that = this;
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     Intent intentZoomVideo = new Intent(that.cordova.getActivity().getBaseContext(), SessionActivity.class);
-                    intentZoomVideo.putExtra("sdkKey", sdkKey);
-                    intentZoomVideo.putExtra("sdkSecret", sdkSecret);
+                    intentZoomVideo.putExtra("jwtToken", jwtToken);
                     intentZoomVideo.putExtra("sessionName", sessionName);
-                    intentZoomVideo.putExtra("sessionKey", sessionKey);
-                    intentZoomVideo.putExtra("userIdentity", userIdentity);
-                    intentZoomVideo.putExtra("roleType", roleType);
+                    intentZoomVideo.putExtra("userName", userName);
+                    intentZoomVideo.putExtra("domain", domain);
 
                     that.cordova.startActivityForResult(that, intentZoomVideo, 0);
                 }
@@ -83,22 +68,18 @@ public class ZoomVideo extends CordovaPlugin {
 
     public Bundle onSaveInstanceState() {
         Bundle state = new Bundle();
-        state.putString("sdkKey", this.sdkKey);
-        state.putString("sdkSecret", this.sdkSecret);
+        state.putString("jwtToken", this.jwtToken);
         state.putString("sessionName", this.sessionName);
-        state.putInt("roleType", this.roleType);
-        state.putString("sessionKey", this.sessionKey);
-        state.putString("userIdentity", this.userIdentity);
+        state.putString("userName", this.userName);
+        state.putString("domain", this.domain);
         return state;
     }
 
     public void onRestoreStateForActivityResult(Bundle state, CallbackContext callbackContext) {
-        this.sdkKey = state.getString("sdkKey");
-        this.sdkSecret = state.getString("sdkSecret");
+        this.jwtToken = state.getString("jwtToken");
         this.sessionName = state.getString("sessionName");
-        this.roleType = state.getInt("roleType");
-        this.sessionKey = state.getString("sessionKey");
-        this.userIdentity = state.getString("userIdentity");
+        this.userName = state.getString("userName");
+        this.domain = state.getString("domain");
         this.callbackContext = callbackContext;
     }
 }
