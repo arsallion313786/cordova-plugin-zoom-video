@@ -98,7 +98,7 @@
             </feature>
         </config-file>
         <framework src="src/ios/ZoomVideoSDK.xcframework" custom="true"  embed="true"/>
-        <framework src="src/ios/ZoomVideoSDKUIToolkit.xcframework" custom="true"  embed="true"/>
+        <!-- <framework src="src/ios/ZoomVideoSDKUIToolkit.xcframework" custom="true"  embed="true"/> -->
 
 
 		<resource-file src="src/ios/Resources/TwilioVideo.storyboard" target="Resources/TwilioVideo.storyboard" />

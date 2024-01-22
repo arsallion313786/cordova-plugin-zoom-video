@@ -1,5 +1,5 @@
 import ZoomVideoSDK
-import ZoomVideoSDKUIToolkit
+//import ZoomVideoSDKUIToolkit
 @objc (ZoomVideo) class ZoomVideo: CDVPlugin{
     @objc (openSession:) // This @OBJC tag matcher our Javascript interface method with the SWIFT code. The actual function name can be whatever you want, as long as the tag matches
     func openSession(command: CDVInvokedUrlCommand) {
@@ -12,8 +12,7 @@ import ZoomVideoSDKUIToolkit
         
         if initializeZoomSDK(domain: domain, enableLog: enableLog){
             if joinZoomSession(jwt: JWTToken, sessionName: sessionName, userName: userName){
-//                openVideoCall()
-                openVideoCallZoomLayout(jwt: JWTToken, sessionName: sessionName, userName: userName)
+                openVideoCall()
             }
         }
     }
@@ -38,13 +37,11 @@ import ZoomVideoSDKUIToolkit
     
     func joinZoomSession(jwt: String, sessionName: String, userName: String) -> Bool{
         let sessionContext = ZoomVideoSDKSessionContext()
-        // Ensure that you do not hard code JWT or any other confidential credentials in your production app.
         sessionContext.token = jwt
         sessionContext.sessionName = sessionName
         sessionContext.userName = userName
-//        sessionContext.sessionPassword = "Your session password"
         if let session = ZoomVideoSDK.shareInstance()?.joinSession(sessionContext) {
-            // Session joined successfully.
+            print("session joined successfully")
             return true
         } else {
             print("session failed to join")
@@ -53,18 +50,21 @@ import ZoomVideoSDKUIToolkit
     }
     
     func openVideoCall(){
-        
-        let storyboard = UIStoryboard(name: "TwilioVideo", bundle: nil)
+        let storyboard = UIStoryboard(name: "VideoCall", bundle: nil)
         let secondViewController = storyboard.instantiateViewController(identifier: "ViewController") as! VideoViewController
         secondViewController.modalPresentationStyle = .fullScreen
         self.viewController.present(secondViewController, animated: true, completion: nil)
 
     }
     
+/*
+    * This action uses the ZoomVideoSDKUIToolkit.xcframework dependency, but this framework is currently in beta as Jan 2024. WHat it does is it replaces our custom screen with a default Zoom video screen provided by Zoom
+ */
+    /*
     func openVideoCallZoomLayout(jwt: String, sessionName: String, userName: String){
         let vc = UIToolkitVC(sessionContext: SessionContext(jwt: jwt, sessionName: sessionName, username: userName))
         vc.modalPresentationStyle = .fullScreen
         self.viewController.present(vc, animated: true)
         print("session joined")
-    }
+    }*/
 }
