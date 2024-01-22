@@ -9,8 +9,8 @@ function callNativeFunction(name, args, success, error) {
 }
 
 var zoom = {
-    openSession: function(sdkKey, sdkSecret, sessionName, sessionKey, userIdentity, roleType, success, error) {
-        callNativeFunction('openSession', [sdkKey, sdkSecret, sessionName, sessionKey, userIdentity, roleType], success, error);
+    openSession: function(jwtToken, sessionName, userName, domain, enableLog, success, error) {
+        callNativeFunction('openSession', [jwtToken, sessionName, userName, domain, enableLog], success, error);
     }
 };
 

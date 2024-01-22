@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
 
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +37,6 @@ import java.util.List;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import io.cordova.hellocordova.R;
 import us.zoom.sdk.ZoomVideoSDK;
 import us.zoom.sdk.ZoomVideoSDKAnnotationHelper;
 import us.zoom.sdk.ZoomVideoSDKAudioHelper;
@@ -44,7 +44,6 @@ import us.zoom.sdk.ZoomVideoSDKAudioOption;
 import us.zoom.sdk.ZoomVideoSDKAudioRawData;
 import us.zoom.sdk.ZoomVideoSDKAudioStatus;
 import us.zoom.sdk.ZoomVideoSDKCRCCallStatus;
-import us.zoom.sdk.ZoomVideoSDKCameraDevice;
 import us.zoom.sdk.ZoomVideoSDKChatHelper;
 import us.zoom.sdk.ZoomVideoSDKChatMessage;
 import us.zoom.sdk.ZoomVideoSDKChatMessageDeleteType;
@@ -64,7 +63,6 @@ import us.zoom.sdk.ZoomVideoSDKRawDataPipe;
 import us.zoom.sdk.ZoomVideoSDKRecordingConsentHandler;
 import us.zoom.sdk.ZoomVideoSDKRecordingStatus;
 import us.zoom.sdk.ZoomVideoSDKSSLCertificateInfo;
-import us.zoom.sdk.ZoomVideoSDKSession;
 import us.zoom.sdk.ZoomVideoSDKSessionContext;
 import us.zoom.sdk.ZoomVideoSDKShareHelper;
 import us.zoom.sdk.ZoomVideoSDKShareStatus;
@@ -86,12 +84,10 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     /*
      * Necessary parameters to create or join the Zoom Video session.
      */
-    private String sdkKey;
-    private String sdkSecret;
+    private String jwtToken;
     private String sessionName;
-    private int roleType;
-    private String sessionKey;
-    private String userIdentity;
+    private String userName;
+    private String domain;
 
     /*
      * Video views.
@@ -99,9 +95,9 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     private ZoomVideoSDKVideoView primaryVideoView;
     private ZoomVideoSDKVideoView thumbnailVideoView;
     private ZoomVideoSDKVideoView secondaryThumbnailVideoView;
-    private String primaryUserId;
-    private String thumbnailUserId;
-    private String secondaryThumbnailUserId;
+    private ZoomVideoSDKUser primaryUser;
+    private ZoomVideoSDKUser thumbnailUser;
+    private ZoomVideoSDKUser secondaryThumbnailUser;
 
     /*
      * Android application UI elements
@@ -117,25 +113,40 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     private AlertDialog alertDialog;
     private AudioManager audioManager;
 
+    private Context context;
+    final String LAYOUT = "layout";
+    final String STRING = "string";
+    final String DRAWABLE = "drawable";
+    final String ID = "id";
+
+    public static int getResourceId(Context context, String group, String key) {
+        return context.getResources().getIdentifier(key, group, context.getPackageName());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
 
-        setContentView(R.layout.activity_video);
+        setContentView(getResourceId(context,LAYOUT,"activity_video"));
 
-        primaryVideoView = findViewById(R.id.primary_video_view);
-        thumbnailVideoView = findViewById(R.id.thumbnail_video_view);
-        secondaryThumbnailVideoView = findViewById(R.id.secondary_thumbnail_video_view);
+        primaryVideoView = findViewById(getResourceId(context,ID,("primary_video_view")));
+        thumbnailVideoView = findViewById(getResourceId(context,ID,("thumbnail_video_view")));
+        secondaryThumbnailVideoView = findViewById(getResourceId(context,ID,("secondary_thumbnail_video_view")));
 
-        videoStatusTextView = findViewById(R.id.video_status_textview);
-        identityTextView = findViewById(R.id.identity_textview);
+        videoStatusTextView = findViewById(getResourceId(context,ID,("video_status_textview")));
+        identityTextView = findViewById(getResourceId(context,ID,("identity_textview")));
 
-        connectActionFab = findViewById(R.id.connect_action_fab);
-        disconnectActionFab = findViewById(R.id.disconnect_action_fab);
-        switchCameraActionFab = findViewById(R.id.switch_camera_action_fab);
-        localVideoActionFab = findViewById(R.id.local_video_action_fab);
-        muteActionFab = findViewById(R.id.mute_action_fab);
-        speakerActionFab = findViewById(R.id.speaker_action_fab);
+        connectActionFab = findViewById(getResourceId(context,ID,("connect_action_fab")));
+        disconnectActionFab = findViewById(getResourceId(context,ID,("disconnect_action_fab")));
+        switchCameraActionFab = findViewById(getResourceId(context,ID,("switch_camera_action_fab")));
+        localVideoActionFab = findViewById(getResourceId(context,ID,("local_video_action_fab")));
+        muteActionFab = findViewById(getResourceId(context,ID,("mute_action_fab")));
+        speakerActionFab = findViewById(getResourceId(context,ID,("speaker_action_fab")));
+
+        this.primaryUser = null;
+        this.thumbnailUser = null;
+        this.secondaryThumbnailUser = null;
 
         /*
          * Enable changing the volume using the up/down keys during a conversation
@@ -148,12 +159,10 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         Intent intent = getIntent();
-        this.sdkKey = intent.getStringExtra("sdkKey");
-        this.sdkSecret = intent.getStringExtra("sdkSecret");
+        this.jwtToken = intent.getStringExtra("jwtToken");
         this.sessionName = intent.getStringExtra("sessionName");
-        this.roleType = intent.getIntExtra("roleType", 0);
-        this.sessionKey = intent.getStringExtra("sessionKey");
-        this.userIdentity = intent.getStringExtra("userIdentity");
+        this.userName = intent.getStringExtra("userName");
+        this.domain = intent.getStringExtra("domain");
 
         /*
          * Check camera and microphone permissions. Needed in Android M.
@@ -195,9 +204,24 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         /*
          * Always leave the session before leaving the Activity.
          */
-        ZoomVideoSDK.getInstance().getVideoHelper().stopVideo();
-        ZoomVideoSDK.getInstance().getAudioHelper().stopAudio();
-        ZoomVideoSDK.getInstance().leaveSession(false);
+        if (this.secondaryThumbnailUser != null) {
+            this.secondaryThumbnailUser.getVideoCanvas().unSubscribe(this.secondaryThumbnailVideoView);
+        }
+        if (this.thumbnailUser != null) {
+            this.thumbnailUser.getVideoCanvas().unSubscribe(this.thumbnailVideoView);
+        }
+        if (this.primaryUser != null) {
+            this.primaryUser.getVideoCanvas().unSubscribe(this.primaryVideoView);
+        }
+
+        ZoomVideoSDK sdk = ZoomVideoSDK.getInstance();
+        ZoomVideoSDKVideoHelper videoHelper = sdk.getVideoHelper();
+        ZoomVideoSDKAudioHelper audioHelper = sdk.getAudioHelper();
+        videoHelper.stopVideo();
+        audioHelper.stopAudio();
+
+        sdk.leaveSession(false);
+        sdk.cleanup();
         super.onDestroy();
     }
 
@@ -216,7 +240,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                 joinSession();
                 initializeUI();
             } else {
-                Toast.makeText(this, R.string.permissions_needed, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResourceId(context,STRING,("permissions_needed")), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -233,7 +257,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                 ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.RECORD_AUDIO)) {
             Toast.makeText(this,
-                    R.string.permissions_needed,
+                    getResourceId(context,STRING,("permissions_needed")),
                     Toast.LENGTH_LONG).show();
         } else {
             ActivityCompat.requestPermissions(
@@ -243,44 +267,50 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         }
     }
 
-    private String getJWT(){
-        long iat = (System.currentTimeMillis()/1000) - 30;
-        long exp = iat + 60 * 60 * 2;
-
-        String header = "{\"alg\": \"HS256\", \"typ\": \"JWT\"}";
-        String payload = "{\"app_key\": \"" + this.sdkKey + "\"" +
-                ", \"tpc\": \"" + this.sessionName + "\"" +
-                ", \"role_type\": " + this.roleType +
-                ", \"session_key\": \"" + this.sessionKey + "\"" +
-                ", \"user_identity\": \"" + this.userIdentity + "\"" +
-                ", \"version\": 1" +
-                ", \"iat\": " + String.valueOf(iat) +
-                ", \"exp\": " + String.valueOf(exp) + "}";
-
-        try {
-            String headerBase64Str = Base64.encodeToString(header.getBytes(StandardCharsets.UTF_8),
-                    Base64.NO_WRAP| Base64.NO_PADDING | Base64.URL_SAFE);
-            String payloadBase64Str = Base64.encodeToString(payload.getBytes(StandardCharsets.UTF_8),
-                    Base64.NO_WRAP| Base64.NO_PADDING | Base64.URL_SAFE);
-
-            final Mac mac = Mac.getInstance("HmacSHA256");
-            SecretKeySpec secretKeySpec = new SecretKeySpec(this.sdkSecret.getBytes(), "HmacSHA256");
-            mac.init(secretKeySpec);
-
-            byte[] digest = mac.doFinal((headerBase64Str + "." + payloadBase64Str).getBytes());
-
-            return headerBase64Str + "." + payloadBase64Str + "." + Base64.encodeToString(digest,
-                    Base64.NO_WRAP| Base64.NO_PADDING | Base64.URL_SAFE);
-
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    private String getJWT(){
+//        long iat = (System.currentTimeMillis()/1000) - 30;
+//        long exp = iat + 60 * 60 * 2;
+//
+//        String header = "{\"alg\": \"HS256\", \"typ\": \"JWT\"}";
+//        String payload = "{\"app_key\": \"" + this.sdkKey + "\"" +
+//                ", \"tpc\": \"" + this.sessionName + "\"" +
+//                ", \"role_type\": " + this.roleType +
+//                ", \"session_key\": \"" + this.sessionKey + "\"" +
+//                ", \"user_identity\": \"" + this.userIdentity + "\"" +
+//                ", \"version\": 1" +
+//                ", \"iat\": " + String.valueOf(iat) +
+//                ", \"exp\": " + String.valueOf(exp) + "}";
+//
+//        try {
+//            String headerBase64Str = Base64.encodeToString(header.getBytes(StandardCharsets.UTF_8),
+//                    Base64.NO_WRAP| Base64.NO_PADDING | Base64.URL_SAFE);
+//            String payloadBase64Str = Base64.encodeToString(payload.getBytes(StandardCharsets.UTF_8),
+//                    Base64.NO_WRAP| Base64.NO_PADDING | Base64.URL_SAFE);
+//
+//            final Mac mac = Mac.getInstance("HmacSHA256");
+//            SecretKeySpec secretKeySpec = new SecretKeySpec(this.sdkSecret.getBytes(), "HmacSHA256");
+//            mac.init(secretKeySpec);
+//
+//            byte[] digest = mac.doFinal((headerBase64Str + "." + payloadBase64Str).getBytes());
+//
+//            return headerBase64Str + "." + payloadBase64Str + "." + Base64.encodeToString(digest,
+//                    Base64.NO_WRAP| Base64.NO_PADDING | Base64.URL_SAFE);
+//
+//        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     private void initializeSDK() {
         ZoomVideoSDKInitParams params = new ZoomVideoSDKInitParams();
-        params.domain = "https://zoom.us"; // Required
+
+        if (this.domain == null || this.domain.equals("")) {
+            params.domain = "https://zoom.us";
+        } else {
+            params.domain = domain;
+        }
+
         ZoomVideoSDK sdk = ZoomVideoSDK.getInstance();
 
         int initResult = sdk.initialize(this, params);
@@ -292,6 +322,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
             sdk.addListener(this);
         } else {
             // Something went wrong, see error code documentation
+            Log.e("SessionActivity", "Initialize SDK error: " + initResult	);
         }
     }
 
@@ -307,12 +338,12 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
 
         ZoomVideoSDKSessionContext sessionContext = new ZoomVideoSDKSessionContext();
         sessionContext.sessionName = this.sessionName;
-        sessionContext.userName = this.userIdentity;
-        sessionContext.token = getJWT();
+        sessionContext.userName = this.userName;
+        sessionContext.token = this.jwtToken;
         sessionContext.audioOption = audioOptions;
         sessionContext.videoOption = videoOptions;
 
-        ZoomVideoSDKSession session = ZoomVideoSDK.getInstance().joinSession(sessionContext);
+        ZoomVideoSDK.getInstance().joinSession(sessionContext);
     }
 
     private void initializeUI() {
@@ -368,17 +399,17 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                 ZoomVideoSDKUser myUser = ZoomVideoSDK.getInstance().getSession().getMySelf();
                 ZoomVideoSDKVideoHelper videoHelper = ZoomVideoSDK.getInstance().getVideoHelper();
 
-                if (myUser.getVideoStatus().isOn()) {
+                if (myUser.getVideoCanvas().getVideoStatus().isOn()) {
 
                     videoHelper.stopVideo();
 
-                    icon = R.drawable.ic_videocam_off_red_24px;
+                    icon = getResourceId(context,DRAWABLE,("ic_videocam_off_red_24px"));
                     switchCameraActionFab.hide();
                 } else {
 
                     videoHelper.startVideo();
 
-                    icon = R.drawable.ic_videocam_green_24px;
+                    icon = getResourceId(context,DRAWABLE,("ic_videocam_green_24px"));
                     switchCameraActionFab.show();
                 }
                 localVideoActionFab.setImageDrawable(ContextCompat.getDrawable(SessionActivity.this, icon));
@@ -400,10 +431,10 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                 int icon;
                 if(myUser.getAudioStatus().isMuted()) {
                     audioHelper.unMuteAudio(myUser);
-                    icon = R.drawable.ic_mic_green_24px;;
+                    icon = getResourceId(context,DRAWABLE,("ic_mic_green_24px"));;
                 } else {
                     audioHelper.muteAudio(myUser);
-                    icon = R.drawable.ic_mic_off_red_24px;
+                    icon = getResourceId(context,DRAWABLE,("ic_mic_off_red_24px"));
                 }
                 muteActionFab.setImageDrawable(ContextCompat.getDrawable(SessionActivity.this, icon));
             }
@@ -417,11 +448,11 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                 if (audioManager.isSpeakerphoneOn()) {
                     audioManager.setSpeakerphoneOn(false);
                     speakerActionFab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),
-                            R.drawable.ic_volume_down_white_24px));
+                            getResourceId(context,DRAWABLE,("ic_volume_down_white_24px"))));
                 } else {
                     audioManager.setSpeakerphoneOn(true);
                     speakerActionFab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),
-                            R.drawable.ic_volume_down_green_24px));
+                            getResourceId(context,DRAWABLE,("ic_volume_down_green_24px"))));
                 }
             }
         };
@@ -432,44 +463,17 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     public void onSessionJoin() {
         ZoomVideoSDK sdk = ZoomVideoSDK.getInstance();
         ZoomVideoSDKUser myUser = sdk.getSession().getMySelf();
+        ZoomVideoSDKVideoCanvas myCanvas = myUser.getVideoCanvas();
 
         /* Start Video */
         ZoomVideoSDKVideoHelper videoHelper = sdk.getVideoHelper();
-        if (!myUser.getVideoStatus().isOn()) {
+        if (!myCanvas.getVideoStatus().isOn()) {
             videoHelper.startVideo();
         } else {
-            // The user is already connected to video.
+            Log.i("SessionActivity", "Video was already started onSessionJoin");
         }
-        List<ZoomVideoSDKUser> userList = sdk.getSession().getRemoteUsers();
-        ZoomVideoSDKVideoCanvas myCanvas = myUser.getVideoCanvas();
-        ZoomVideoSDKVideoView myVideoView;
-        if (userList.isEmpty()) {
-            // Render the user in the primary video view if no one else is in the session.
-            myVideoView = this.primaryVideoView;
-            this.primaryUserId = myUser.getUserID();
-        } else {
-            myVideoView = this.thumbnailVideoView;
-            myVideoView.setVisibility(View.VISIBLE);
-            this.thumbnailUserId = myUser.getUserID();
-
-            int index = 0;
-            for(ZoomVideoSDKUser user : userList) {
-                if (index == 0) {
-                    this.primaryUserId = user.getUserID();
-                    user.getVideoCanvas().subscribe(this.primaryVideoView,
-                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
-                            ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
-                } else if (index == 1) {
-                    this.secondaryThumbnailVideoView.setVisibility(View.VISIBLE);
-                    this.secondaryThumbnailUserId = user.getUserID();
-                    user.getVideoCanvas().subscribe(this.secondaryThumbnailVideoView,
-                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
-                            ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
-                }
-                index++;
-            }
-        }
-        myCanvas.subscribe(myVideoView,
+        this.primaryUser = myUser;
+        myCanvas.subscribe(this.primaryVideoView,
                 ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
                 ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
 
@@ -480,7 +484,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         if (audioType == ZoomVideoSDKAudioStatus.ZoomVideoSDKAudioType.ZoomVideoSDKAudioType_None) {
             audioHelper.startAudio();
         } else {
-            // The user is already connected to audio.
+            Log.i("SessionActivity", "Audio was already started onSessionJoin");
         }
     }
 
@@ -497,20 +501,35 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     @Override
     public void onUserJoin(ZoomVideoSDKUserHelper userHelper, List<ZoomVideoSDKUser> userList) {
         ZoomVideoSDKUser myUser = ZoomVideoSDK.getInstance().getSession().getMySelf();
+        ZoomVideoSDKVideoCanvas myCanvas = myUser.getVideoCanvas();
         for (ZoomVideoSDKUser user : userList) {
-            if(this.thumbnailVideoView.getVisibility() == View.GONE){
-                this.thumbnailVideoView.setVisibility(View.VISIBLE);
 
-                this.thumbnailUserId = myUser.getUserID();
-                ZoomVideoSDKVideoCanvas myCanvas = myUser.getVideoCanvas();
+            ZoomVideoSDKVideoCanvas userCanvas = user.getVideoCanvas();
+
+            //If the local user is in the primary view
+            //move them from the primary view to the thumbnail.
+            if (this.primaryUser != null && this.primaryUser.getUserID().equals(myUser.getUserID())) {
+                this.primaryUser = null;
+                this.thumbnailUser = myUser;
+
+                this.thumbnailVideoView.setVisibility(View.VISIBLE);
                 myCanvas.unSubscribe(this.primaryVideoView);
                 myCanvas.subscribe(this.thumbnailVideoView,
                         ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
                         ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+            }
 
-                this.primaryUserId = user.getUserID();
-                ZoomVideoSDKVideoCanvas userCanvas = user.getVideoCanvas();
+            // Place the user in the primary view if it is available.
+            if(this.primaryUser == null){
+                this.primaryUser = user;
                 userCanvas.subscribe(this.primaryVideoView,
+                        ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
+                        ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+            } else if (this.secondaryThumbnailUser == null) {
+                // In this case, the user will be in the secondary thumbnail if it is available.
+                this.secondaryThumbnailUser = user;
+                this.secondaryThumbnailVideoView.setVisibility(View.VISIBLE);
+                userCanvas.subscribe(this.secondaryThumbnailVideoView,
                         ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
                         ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
             }
@@ -519,18 +538,40 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
 
     @Override
     public void onUserLeave(ZoomVideoSDKUserHelper userHelper, List<ZoomVideoSDKUser> userList) {
-        ZoomVideoSDKUser myUser = ZoomVideoSDK.getInstance().getSession().getMySelf();
         for (ZoomVideoSDKUser user : userList) {
-            if (this.primaryUserId.equals(user.getUserID())) {
-                // Remove the user from primary view and replace with the local user.
+            if (this.primaryUser != null && this.primaryUser.getUserID().equals(user.getUserID())) {
+                // Remove the user from primary view.
+                this.primaryUser = null;
                 user.getVideoCanvas().unSubscribe(this.primaryVideoView);
 
-                this.primaryUserId = myUser.getUserID();
-                this.thumbnailVideoView.setVisibility(View.GONE);
-                myUser.getVideoCanvas().unSubscribe(this.thumbnailVideoView);
-                myUser.getVideoCanvas().subscribe(this.primaryVideoView,
-                        ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
-                        ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+                if (this.secondaryThumbnailUser != null) {
+                    // Move the secondary thumbnail user to the primary view.
+                    this.secondaryThumbnailUser.getVideoCanvas().unSubscribe(this.secondaryThumbnailVideoView);
+                    this.secondaryThumbnailVideoView.setVisibility(View.GONE);
+
+                    this.primaryUser = this.secondaryThumbnailUser;
+                    this.secondaryThumbnailUser = null;
+
+                    this.primaryUser.getVideoCanvas().subscribe(this.primaryVideoView,
+                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
+                            ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+                } else if (this.thumbnailUser != null) {
+                    // Move the thumbnail user to the primary view.
+                    this.thumbnailUser.getVideoCanvas().unSubscribe(this.thumbnailVideoView);
+                    this.thumbnailVideoView.setVisibility(View.GONE);
+
+                    this.primaryUser = this.thumbnailUser;
+                    this.thumbnailUser = null;
+
+                    this.primaryUser.getVideoCanvas().subscribe(this.primaryVideoView,
+                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
+                            ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+                }
+
+            } else if (this.secondaryThumbnailUser != null && this.secondaryThumbnailUser.getUserID().equals(user.getUserID())) {
+                this.secondaryThumbnailUser.getVideoCanvas().unSubscribe(this.secondaryThumbnailVideoView);
+                this.secondaryThumbnailVideoView.setVisibility(View.GONE);
+                this.secondaryThumbnailUser = null;
             }
         }
     }
