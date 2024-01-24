@@ -75,19 +75,12 @@
     <platform name="ios">
         <source-file src="src/ios/ZoomVideo.swift"/>
         <source-file src="src/ios/VideoViewController.swift"/>
-        <!-- <source-file src="src/ios/VideoManager.swift"/> -->
-
-        <hook src="hooks/beforePluginInstallHook.js" type="before_plugin_install" /> 
 
         <config-file parent="ENABLE_BITCODE" target="build.xcconfig">
             <false/>
         </config-file>
 
-        <config-file parent="SWIFT_VERSION" target="build.xcconfig">
-            <string>5</string>
-        </config-file>
-
-        <!-- <preference name="UseSwiftLanguageVersion" value="5" /> -->
+        <dependency id="cordova-plugin-add-swift-support" version="2.0.2"/>
 
         <preference name="CAMERA_USAGE_DESCRIPTION" default="Required to allow video call functionality" />
         <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
