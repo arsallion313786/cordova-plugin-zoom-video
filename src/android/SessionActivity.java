@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Bundle;
 
@@ -25,7 +26,9 @@ import androidx.appcompat.app.AlertDialog;
 
 import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -177,13 +180,17 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     }
 
     @Override
-    protected  void onResume() {
+    protected void onResume() {
         /*
          * If the video was stopped when the app was put in the background, start again.
          */
         super.onResume();
-        if(ZoomVideoSDK.getInstance().isInSession()) {
-            ZoomVideoSDK.getInstance().getVideoHelper().startVideo();
+        ZoomVideoSDK sdk = ZoomVideoSDK.getInstance();
+        if(sdk.isInSession()) {
+            Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+
+            sdk.getVideoHelper().startVideo();
+            sdk.getVideoHelper().rotateMyVideo(display.getRotation());
         }
     }
 
@@ -223,6 +230,18 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         sdk.leaveSession(false);
         sdk.cleanup();
         super.onDestroy();
+    }
+
+    @Override
+    public void onConfigurationChanged (@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // We want to rotate the local video based on the phone rotation.
+        ZoomVideoSDK sdk = ZoomVideoSDK.getInstance();
+        if(sdk.isInSession()) {
+            Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+            sdk.getVideoHelper().rotateMyVideo(display.getRotation());
+        }
     }
 
     @Override
@@ -474,7 +493,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         }
         this.primaryUser = myUser;
         myCanvas.subscribe(this.primaryVideoView,
-                ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
+                ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                 ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
 
         /* Start Audio */
@@ -515,7 +534,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                 this.thumbnailVideoView.setVisibility(View.VISIBLE);
                 myCanvas.unSubscribe(this.primaryVideoView);
                 myCanvas.subscribe(this.thumbnailVideoView,
-                        ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
+                        ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                         ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
             }
 
@@ -523,14 +542,14 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
             if(this.primaryUser == null){
                 this.primaryUser = user;
                 userCanvas.subscribe(this.primaryVideoView,
-                        ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
+                        ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                         ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
             } else if (this.secondaryThumbnailUser == null) {
                 // In this case, the user will be in the secondary thumbnail if it is available.
                 this.secondaryThumbnailUser = user;
                 this.secondaryThumbnailVideoView.setVisibility(View.VISIBLE);
                 userCanvas.subscribe(this.secondaryThumbnailVideoView,
-                        ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
+                        ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                         ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
             }
         }
@@ -553,7 +572,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                     this.secondaryThumbnailUser = null;
 
                     this.primaryUser.getVideoCanvas().subscribe(this.primaryVideoView,
-                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
+                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                             ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
                 } else if (this.thumbnailUser != null) {
                     // Move the thumbnail user to the primary view.
@@ -564,7 +583,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                     this.thumbnailUser = null;
 
                     this.primaryUser.getVideoCanvas().subscribe(this.primaryVideoView,
-                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_Original,
+                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                             ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
                 }
 
