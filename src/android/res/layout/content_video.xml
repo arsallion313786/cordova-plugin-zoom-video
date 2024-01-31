@@ -14,6 +14,20 @@
     android:background="@color/colorBlack">
 
     <us.zoom.sdk.ZoomVideoSDKVideoView
+        android:id="@+id/primary_video_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/waiting_message_textview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBlack"
+            android:gravity="center"
+            android:textColor="@color/colorAccent" />
+    </us.zoom.sdk.ZoomVideoSDKVideoView>
+
+    <us.zoom.sdk.ZoomVideoSDKVideoView
         android:id="@+id/thumbnail_video_view"
         android:visibility="gone"
         android:layout_width="96dp"
@@ -30,19 +44,6 @@
         android:layout_marginBottom="160dp"
         android:layout_gravity="bottom|start"/>
 
-    <us.zoom.sdk.ZoomVideoSDKVideoView
-        android:id="@+id/primary_video_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <TextView
-            android:id="@+id/waiting_message_textview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/colorAccent" />
-    </us.zoom.sdk.ZoomVideoSDKVideoView>
-		
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

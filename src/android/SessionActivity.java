@@ -153,8 +153,6 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         this.thumbnailUser = null;
         this.secondaryThumbnailUser = null;
 
-
-
         /*
          * Enable changing the volume using the up/down keys during a conversation
          */
@@ -535,10 +533,10 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
 
                 this.waitingMessageTextView.setVisibility(View.GONE);
 
-                this.primaryUser = user;
                 userCanvas.subscribe(this.primaryVideoView,
                         ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                         ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+                this.primaryUser = user;
             } else if (this.secondaryThumbnailUser == null) {
                 // In this case, the user will be in the secondary thumbnail if it is available.
                 this.secondaryThumbnailVideoView.setVisibility(View.VISIBLE);
@@ -555,8 +553,8 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         for (ZoomVideoSDKUser user : userList) {
             if (this.primaryUser != null && this.primaryUser.getUserID().equals(user.getUserID())) {
                 // Remove the user from primary view.
-                this.primaryUser = null;
                 user.getVideoCanvas().unSubscribe(this.primaryVideoView);
+                this.primaryUser = null;
 
                 if (this.secondaryThumbnailUser != null) {
                     // Move the secondary thumbnail user to the primary view.
