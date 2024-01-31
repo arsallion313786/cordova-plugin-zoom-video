@@ -105,6 +105,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     /*
      * Android application UI elements
      */
+    private TextView waitingMessageTextView;
     private TextView videoStatusTextView;
     private TextView identityTextView;
     private FloatingActionButton connectActionFab;
@@ -137,6 +138,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         thumbnailVideoView = findViewById(getResourceId(context,ID,("thumbnail_video_view")));
         secondaryThumbnailVideoView = findViewById(getResourceId(context,ID,("secondary_thumbnail_video_view")));
 
+        waitingMessageTextView = findViewById(getResourceId(context,ID,("waiting_message_textview")));
         videoStatusTextView = findViewById(getResourceId(context,ID,("video_status_textview")));
         identityTextView = findViewById(getResourceId(context,ID,("identity_textview")));
 
@@ -150,6 +152,8 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         this.primaryUser = null;
         this.thumbnailUser = null;
         this.secondaryThumbnailUser = null;
+
+
 
         /*
          * Enable changing the volume using the up/down keys during a conversation
@@ -166,6 +170,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         this.sessionName = intent.getStringExtra("sessionName");
         this.userName = intent.getStringExtra("userName");
         this.domain = intent.getStringExtra("domain");
+        waitingMessageTextView.setText(intent.getStringExtra("waitingMessage"));
 
         /*
          * Check camera and microphone permissions. Needed in Android M.
@@ -491,8 +496,10 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         } else {
             Log.i("SessionActivity", "Video was already started onSessionJoin");
         }
-        this.primaryUser = myUser;
-        myCanvas.subscribe(this.primaryVideoView,
+
+        this.thumbnailVideoView.setVisibility(View.VISIBLE);
+        this.thumbnailUser = myUser;
+        myCanvas.subscribe(this.thumbnailVideoView,
                 ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                 ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
 
@@ -519,35 +526,23 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
 
     @Override
     public void onUserJoin(ZoomVideoSDKUserHelper userHelper, List<ZoomVideoSDKUser> userList) {
-        ZoomVideoSDKUser myUser = ZoomVideoSDK.getInstance().getSession().getMySelf();
-        ZoomVideoSDKVideoCanvas myCanvas = myUser.getVideoCanvas();
         for (ZoomVideoSDKUser user : userList) {
 
             ZoomVideoSDKVideoCanvas userCanvas = user.getVideoCanvas();
 
-            //If the local user is in the primary view
-            //move them from the primary view to the thumbnail.
-            if (this.primaryUser != null && this.primaryUser.getUserID().equals(myUser.getUserID())) {
-                this.primaryUser = null;
-                this.thumbnailUser = myUser;
-
-                this.thumbnailVideoView.setVisibility(View.VISIBLE);
-                myCanvas.unSubscribe(this.primaryVideoView);
-                myCanvas.subscribe(this.thumbnailVideoView,
-                        ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
-                        ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
-            }
-
             // Place the user in the primary view if it is available.
             if(this.primaryUser == null){
+
+                this.waitingMessageTextView.setVisibility(View.GONE);
+
                 this.primaryUser = user;
                 userCanvas.subscribe(this.primaryVideoView,
                         ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                         ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
             } else if (this.secondaryThumbnailUser == null) {
                 // In this case, the user will be in the secondary thumbnail if it is available.
-                this.secondaryThumbnailUser = user;
                 this.secondaryThumbnailVideoView.setVisibility(View.VISIBLE);
+                this.secondaryThumbnailUser = user;
                 userCanvas.subscribe(this.secondaryThumbnailVideoView,
                         ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                         ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
@@ -574,17 +569,8 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                     this.primaryUser.getVideoCanvas().subscribe(this.primaryVideoView,
                             ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                             ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
-                } else if (this.thumbnailUser != null) {
-                    // Move the thumbnail user to the primary view.
-                    this.thumbnailUser.getVideoCanvas().unSubscribe(this.thumbnailVideoView);
-                    this.thumbnailVideoView.setVisibility(View.GONE);
-
-                    this.primaryUser = this.thumbnailUser;
-                    this.thumbnailUser = null;
-
-                    this.primaryUser.getVideoCanvas().subscribe(this.primaryVideoView,
-                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
-                            ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+                } else {
+                    this.waitingMessageTextView.setVisibility(View.VISIBLE);
                 }
 
             } else if (this.secondaryThumbnailUser != null && this.secondaryThumbnailUser.getUserID().equals(user.getUserID())) {

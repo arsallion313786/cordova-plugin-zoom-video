@@ -20,6 +20,7 @@ public class ZoomVideo extends CordovaPlugin {
     private String sessionName;
     private String userName;
     private String domain;
+    private String waitingMessage;
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -43,11 +44,13 @@ public class ZoomVideo extends CordovaPlugin {
             this.sessionName = args.getString(1);
             this.userName = args.getString(2);
             this.domain = args.getString(3);
+            this.waitingMessage = args.getString(5);
 
             final String jwtToken = this.jwtToken;
             final String sessionName = this.sessionName;
             final String userName = this.userName;
             final String domain = this.domain;
+            final String waitingMessage = this.waitingMessage;
 
             final CordovaPlugin that = this;
             cordova.getThreadPool().execute(new Runnable() {
@@ -57,6 +60,7 @@ public class ZoomVideo extends CordovaPlugin {
                     intentZoomVideo.putExtra("sessionName", sessionName);
                     intentZoomVideo.putExtra("userName", userName);
                     intentZoomVideo.putExtra("domain", domain);
+                    intentZoomVideo.putExtra("waitingMessage", waitingMessage);
 
                     that.cordova.startActivityForResult(that, intentZoomVideo, 0);
                 }
@@ -72,6 +76,7 @@ public class ZoomVideo extends CordovaPlugin {
         state.putString("sessionName", this.sessionName);
         state.putString("userName", this.userName);
         state.putString("domain", this.domain);
+        state.putString("waitingMessage", this.waitingMessage);
         return state;
     }
 
@@ -80,6 +85,7 @@ public class ZoomVideo extends CordovaPlugin {
         this.sessionName = state.getString("sessionName");
         this.userName = state.getString("userName");
         this.domain = state.getString("domain");
+        this.waitingMessage = state.getString("waitingMessage");
         this.callbackContext = callbackContext;
     }
 }
