@@ -33,7 +33,15 @@
     <us.zoom.sdk.ZoomVideoSDKVideoView
         android:id="@+id/primary_video_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/waiting_message_textview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/colorAccent" />
+    </us.zoom.sdk.ZoomVideoSDKVideoView>
 		
     <LinearLayout
         android:layout_width="match_parent"
