@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -105,6 +106,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     /*
      * Android application UI elements
      */
+    private ProgressBar progressBar;
     private TextView waitingMessageTextView;
     private TextView videoStatusTextView;
     private TextView identityTextView;
@@ -134,6 +136,8 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
 
         setContentView(getResourceId(context,LAYOUT,"activity_video"));
 
+        progressBar = findViewById(getResourceId(context,ID,("progressBar")));
+
         primaryVideoView = findViewById(getResourceId(context,ID,("primary_video_view")));
         thumbnailVideoView = findViewById(getResourceId(context,ID,("thumbnail_video_view")));
         secondaryThumbnailVideoView = findViewById(getResourceId(context,ID,("secondary_thumbnail_video_view")));
@@ -149,11 +153,15 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         muteActionFab = findViewById(getResourceId(context,ID,("mute_action_fab")));
         speakerActionFab = findViewById(getResourceId(context,ID,("speaker_action_fab")));
 
+        disconnectActionFab.setOnClickListener(disconnectClickListener());
+        switchCameraActionFab.setOnClickListener(switchCameraClickListener());
+        localVideoActionFab.setOnClickListener(localVideoClickListener());
+        muteActionFab.setOnClickListener(muteClickListener());
+        speakerActionFab.setOnClickListener(speakerClickListener());
+
         this.primaryUser = null;
         this.thumbnailUser = null;
         this.secondaryThumbnailUser = null;
-
-
 
         /*
          * Enable changing the volume using the up/down keys during a conversation
@@ -172,15 +180,15 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         this.domain = intent.getStringExtra("domain");
         waitingMessageTextView.setText(intent.getStringExtra("waitingMessage"));
 
+        initializeSDK();
+
         /*
          * Check camera and microphone permissions. Needed in Android M.
          */
         if (!checkPermissionForCameraAndMicrophone()) {
             requestPermissionForCameraAndMicrophone();
         } else {
-            initializeSDK();
             joinSession();
-            initializeUI();
         }
     }
 
@@ -260,9 +268,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
             }
 
             if (cameraAndMicPermissionGranted) {
-                initializeSDK();
                 joinSession();
-                initializeUI();
             } else {
                 Toast.makeText(this, getResourceId(context,STRING,("permissions_needed")), Toast.LENGTH_LONG).show();
             }
@@ -370,25 +376,6 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         ZoomVideoSDK.getInstance().joinSession(sessionContext);
     }
 
-    private void initializeUI() {
-        connectActionFab.hide();
-
-        disconnectActionFab.show();
-        disconnectActionFab.setOnClickListener(disconnectClickListener());
-
-        switchCameraActionFab.show();
-        switchCameraActionFab.setOnClickListener(switchCameraClickListener());
-
-        localVideoActionFab.show();
-        localVideoActionFab.setOnClickListener(localVideoClickListener());
-
-        muteActionFab.show();
-        muteActionFab.setOnClickListener(muteClickListener());
-
-        speakerActionFab.show();
-        speakerActionFab.setOnClickListener(speakerClickListener());
-    }
-
     private View.OnClickListener disconnectClickListener() {
         return new View.OnClickListener() {
             @Override
@@ -485,6 +472,9 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     /* SDK callback listeners */
     @Override
     public void onSessionJoin() {
+        this.progressBar.setVisibility(View.GONE);
+        this.waitingMessageTextView.setVisibility(View.VISIBLE);
+
         ZoomVideoSDK sdk = ZoomVideoSDK.getInstance();
         ZoomVideoSDKUser myUser = sdk.getSession().getMySelf();
         ZoomVideoSDKVideoCanvas myCanvas = myUser.getVideoCanvas();
@@ -535,10 +525,10 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
 
                 this.waitingMessageTextView.setVisibility(View.GONE);
 
-                this.primaryUser = user;
                 userCanvas.subscribe(this.primaryVideoView,
                         ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                         ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+                this.primaryUser = user;
             } else if (this.secondaryThumbnailUser == null) {
                 // In this case, the user will be in the secondary thumbnail if it is available.
                 this.secondaryThumbnailVideoView.setVisibility(View.VISIBLE);
@@ -555,8 +545,8 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         for (ZoomVideoSDKUser user : userList) {
             if (this.primaryUser != null && this.primaryUser.getUserID().equals(user.getUserID())) {
                 // Remove the user from primary view.
-                this.primaryUser = null;
                 user.getVideoCanvas().unSubscribe(this.primaryVideoView);
+                this.primaryUser = null;
 
                 if (this.secondaryThumbnailUser != null) {
                     // Move the secondary thumbnail user to the primary view.
