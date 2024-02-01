@@ -1,6 +1,7 @@
 import ZoomVideoSDK
 //import ZoomVideoSDKUIToolkit
 @objc (ZoomVideo) class ZoomVideo: CDVPlugin{
+    var emptyMessage: String?
     @objc (openSession:) // This @OBJC tag matcher our Javascript interface method with the SWIFT code. The actual function name can be whatever you want, as long as the tag matches
     func openSession(command: CDVInvokedUrlCommand) {
         
@@ -9,7 +10,8 @@ import ZoomVideoSDK
         let userName = command.arguments[2] as? String ?? ""
         let domain = command.arguments[3] as? String ?? "zoom.us"
         let enableLog = command.arguments[4] as? Bool ?? false
-        
+        emptyMessage = command.arguments[5] as? String ?? "Waiting for someone to join the call..."
+
         if initializeZoomSDK(domain: domain, enableLog: enableLog){
             if joinZoomSession(jwt: JWTToken, sessionName: sessionName, userName: userName){
                 openVideoCall()
@@ -49,7 +51,10 @@ import ZoomVideoSDK
         }
     }
     
+    
     func openVideoCall(){
+        let pasteboard = UIPasteboard.general
+        pasteboard.string = emptyMessage
         let storyboard = UIStoryboard(name: "VideoCall", bundle: nil)
         let secondViewController = storyboard.instantiateViewController(identifier: "ViewController") as! VideoViewController
         secondViewController.modalPresentationStyle = .fullScreen

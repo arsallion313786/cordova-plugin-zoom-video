@@ -15,6 +15,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     @IBOutlet weak var myPreview: UIView!
     @IBOutlet weak var toggleVideoButton: UIButton!
     
+    var emptyRoomMessage: UITextView!
     @IBOutlet weak var toggleMicButton: UIButton!
     @IBOutlet weak var hangUpButton: UIButton!
     
@@ -22,6 +23,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     var userOnMainView: ZoomVideoSDKUser?
     var userOnSecondView: ZoomVideoSDKUser?
     var zoomInstance: ZoomVideoSDK?
+    var emptyMessage: String?
     
     var isVideoOn: Bool = true
     var isAudioOn: Bool = true
@@ -33,13 +35,25 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         zoomInstance = ZoomVideoSDK.shareInstance()
         myself = zoomInstance?.getSession()?.getMySelf()
         secondPreview.isHidden = true
-        
+        zoomInstance?.getVideoHelper().mirrorMyVideo(true)
         hangUpButton.layer.cornerRadius = 20
-        // Do any additional setup after loading the view.
+        
+        let pasteboard = UIPasteboard.general
+        emptyMessage = pasteboard.string
+        bootStrapUITextView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         subscribeUserView(view: myPreview, user: myself)
+        validateShowEmptyRoomMessage()
+    }
+    
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        if !fromInterfaceOrientation.isPortrait {
+            zoomInstance?.getVideoHelper().rotateMyVideo(.portrait)
+        } else if !fromInterfaceOrientation.isLandscape{
+            zoomInstance?.getVideoHelper().rotateMyVideo(.landscapeLeft)
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -59,7 +73,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         }
     }
     func onUserJoin(_ helper: ZoomVideoSDKUserHelper?, users userArray: [ZoomVideoSDKUser]?) {
-        print("user join event")
+        validateShowEmptyRoomMessage()
         for i in 0..<userArray!.count{
             if userOnMainView == nil{
                 userOnMainView = userArray![i]
@@ -79,6 +93,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         }
     }
     func onUserLeave(_ helper: ZoomVideoSDKUserHelper?, users userArray: [ZoomVideoSDKUser]?) {
+        validateShowEmptyRoomMessage()
         for i in 0..<userArray!.count{
             if userOnMainView == userArray![i]{
                 userOnMainView?.getVideoCanvas()?.unSubscribe(with: mainView)
@@ -122,13 +137,13 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     
     @IBAction func muteButtonOnClick(_ sender: UIButton) {
             if self.isAudioOn{
-                zoomInstance?.getAudioHelper().stopAudio()
+                zoomInstance?.getAudioHelper().muteAudio(myself)
                 self.isAudioOn = false
                 if let image = UIImage(named: "ic_mic_off_114.png"){
                     toggleMicButton.setImage(image, for: .normal)
                 }
             } else {
-                zoomInstance?.getAudioHelper().startAudio()
+                zoomInstance?.getAudioHelper().unmuteAudio(myself)
                 self.isAudioOn = true
                 if let image = UIImage(named: "ic_mic_on_114.png"){
                     toggleMicButton.setImage(image, for: .normal)
@@ -166,6 +181,40 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     func closeScreen(){
         self.dismiss(animated: true)
     }
+    
+    func validateShowEmptyRoomMessage(){
+        emptyRoomMessage.text = emptyMessage
+        if (zoomInstance?.getSession()?.getRemoteUsers()?.count == 0){
+            emptyRoomMessage.isHidden = false
+        } else {
+            emptyRoomMessage.isHidden = true
+        }
+    }
+    
+    func bootStrapUITextView(){
+        emptyRoomMessage = UITextView()
+
+        // Set the text alignment to center
+        emptyRoomMessage.textAlignment = .center
+        emptyRoomMessage.font = UIFont.systemFont(ofSize: 20)
+
+        // Add the UITextView object as a subview of the view
+        view.addSubview(emptyRoomMessage)
+
+        // Disable the autoresizing mask translation
+        emptyRoomMessage.translatesAutoresizingMaskIntoConstraints = false
+
+        // Create constraints for the UITextView object
+        let centerXConstraint = emptyRoomMessage.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        let centerYConstraint = emptyRoomMessage.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        let widthConstraint = emptyRoomMessage.widthAnchor.constraint(equalToConstant: 200)
+        let heightConstraint = emptyRoomMessage.heightAnchor.constraint(equalToConstant: 100)
+
+        // Activate the constraints
+        NSLayoutConstraint.activate([centerXConstraint, centerYConstraint, widthConstraint, heightConstraint])
+        // Do any additional setup after loading the view.
+    }
+    
     /*
     // MARK: - Navigation
 
