@@ -153,6 +153,12 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         muteActionFab = findViewById(getResourceId(context,ID,("mute_action_fab")));
         speakerActionFab = findViewById(getResourceId(context,ID,("speaker_action_fab")));
 
+        disconnectActionFab.setOnClickListener(disconnectClickListener());
+        switchCameraActionFab.setOnClickListener(switchCameraClickListener());
+        localVideoActionFab.setOnClickListener(localVideoClickListener());
+        muteActionFab.setOnClickListener(muteClickListener());
+        speakerActionFab.setOnClickListener(speakerClickListener());
+
         this.primaryUser = null;
         this.thumbnailUser = null;
         this.secondaryThumbnailUser = null;
@@ -174,15 +180,15 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         this.domain = intent.getStringExtra("domain");
         waitingMessageTextView.setText(intent.getStringExtra("waitingMessage"));
 
+        initializeSDK();
+
         /*
          * Check camera and microphone permissions. Needed in Android M.
          */
         if (!checkPermissionForCameraAndMicrophone()) {
             requestPermissionForCameraAndMicrophone();
         } else {
-            initializeSDK();
             joinSession();
-            initializeUI();
         }
     }
 
@@ -262,9 +268,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
             }
 
             if (cameraAndMicPermissionGranted) {
-                initializeSDK();
                 joinSession();
-                initializeUI();
             } else {
                 Toast.makeText(this, getResourceId(context,STRING,("permissions_needed")), Toast.LENGTH_LONG).show();
             }
@@ -370,25 +374,6 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         sessionContext.videoOption = videoOptions;
 
         ZoomVideoSDK.getInstance().joinSession(sessionContext);
-    }
-
-    private void initializeUI() {
-        connectActionFab.hide();
-
-        disconnectActionFab.show();
-        disconnectActionFab.setOnClickListener(disconnectClickListener());
-
-        switchCameraActionFab.show();
-        switchCameraActionFab.setOnClickListener(switchCameraClickListener());
-
-        localVideoActionFab.show();
-        localVideoActionFab.setOnClickListener(localVideoClickListener());
-
-        muteActionFab.show();
-        muteActionFab.setOnClickListener(muteClickListener());
-
-        speakerActionFab.show();
-        speakerActionFab.setOnClickListener(speakerClickListener());
     }
 
     private View.OnClickListener disconnectClickListener() {
