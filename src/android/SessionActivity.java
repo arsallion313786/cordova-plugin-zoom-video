@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -105,6 +106,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     /*
      * Android application UI elements
      */
+    private ProgressBar progressBar;
     private TextView waitingMessageTextView;
     private TextView videoStatusTextView;
     private TextView identityTextView;
@@ -133,6 +135,8 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         context = this;
 
         setContentView(getResourceId(context,LAYOUT,"activity_video"));
+
+        progressBar = findViewById(getResourceId(context,ID,("progressBar")));
 
         primaryVideoView = findViewById(getResourceId(context,ID,("primary_video_view")));
         thumbnailVideoView = findViewById(getResourceId(context,ID,("thumbnail_video_view")));
@@ -483,6 +487,9 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     /* SDK callback listeners */
     @Override
     public void onSessionJoin() {
+        this.progressBar.setVisibility(View.GONE);
+        this.waitingMessageTextView.setVisibility(View.VISIBLE);
+
         ZoomVideoSDK sdk = ZoomVideoSDK.getInstance();
         ZoomVideoSDKUser myUser = sdk.getSession().getMySelf();
         ZoomVideoSDKVideoCanvas myCanvas = myUser.getVideoCanvas();
