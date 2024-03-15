@@ -151,6 +151,12 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
             }
     }
     @IBAction func hangupOnClick(_ sender: UIButton) {
+        // The web client expects that the participants will turn off the video before leaving the call
+        if self.isVideoOn{
+            zoomInstance?.getVideoHelper().stopVideo()
+            self.isVideoOn = false
+        }
+
         zoomInstance?.leaveSession(false)
     }
     
