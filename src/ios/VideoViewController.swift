@@ -204,8 +204,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     }
     
     func bootStrapUITextView(){
-        loadingIcon = UIActivityIndicatorView()
-        loadingIcon.style = .large
+        loadingIcon = UIActivityIndicatorView(style: .large)
         loadingIcon.translatesAutoresizingMaskIntoConstraints = false
         loadingIcon.hidesWhenStopped = true
         view.addSubview(loadingIcon)
@@ -213,7 +212,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         let centerXConstraint = loadingIcon.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let centerYConstraint = loadingIcon.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         NSLayoutConstraint.activate([centerXConstraint, centerYConstraint])
-        
+
         loadingIcon.startAnimating()
 
         // emptyRoomMessage = UITextView()
