@@ -14,10 +14,11 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     @IBOutlet var mainView: UIView!
     @IBOutlet weak var myPreview: UIView!
     @IBOutlet weak var toggleVideoButton: UIButton!
-    
-    var emptyRoomMessage: UITextView!
     @IBOutlet weak var toggleMicButton: UIButton!
     @IBOutlet weak var hangUpButton: UIButton!
+
+    var emptyRoomMessage: UITextView!
+    var loadingIcon: UIActivityIndicatorView!
     
     var myself: ZoomVideoSDKUser?
     var userOnMainView: ZoomVideoSDKUser?
@@ -41,6 +42,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         
         let pasteboard = UIPasteboard.general
         emptyMessage = pasteboard.string
+
         bootStrapUITextView()
     }
 
@@ -202,27 +204,39 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     }
     
     func bootStrapUITextView(){
-        emptyRoomMessage = UITextView()
+        loadingIcon = UIActivityIndicatorView()
+        loadingIcon.style = .large
+        loadingIcon.translatesAutoresizingMaskIntoConstraints = false
+        loadingIcon.hidesWhenStopped = true
+        view.addSubview(loadingIcon)
 
-        // Set the text alignment to center
-        emptyRoomMessage.textAlignment = .center
-        emptyRoomMessage.font = UIFont.systemFont(ofSize: 20)
+        let centerXConstraint = loadingIcon.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        let centerYConstraint = loadingIcon.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        NSLayoutConstraint.activate([centerXConstraint, centerYConstraint])
+        
+        loadingIcon.startAnimating()
 
-        // Add the UITextView object as a subview of the view
-        view.addSubview(emptyRoomMessage)
+        // emptyRoomMessage = UITextView()
 
-        // Disable the autoresizing mask translation
-        emptyRoomMessage.translatesAutoresizingMaskIntoConstraints = false
+        // // Set the text alignment to center
+        // emptyRoomMessage.textAlignment = .center
+        // emptyRoomMessage.font = UIFont.systemFont(ofSize: 20)
 
-        // Create constraints for the UITextView object
-        let centerXConstraint = emptyRoomMessage.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        let centerYConstraint = emptyRoomMessage.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        let widthConstraint = emptyRoomMessage.widthAnchor.constraint(equalToConstant: 200)
-        let heightConstraint = emptyRoomMessage.heightAnchor.constraint(equalToConstant: 100)
+        // // Add the UITextView object as a subview of the view
+        // view.addSubview(emptyRoomMessage)
 
-        // Activate the constraints
-        NSLayoutConstraint.activate([centerXConstraint, centerYConstraint, widthConstraint, heightConstraint])
-        // Do any additional setup after loading the view.
+        // // Disable the autoresizing mask translation
+        // emptyRoomMessage.translatesAutoresizingMaskIntoConstraints = false
+
+        // // Create constraints for the UITextView object
+        // let centerXConstraint = emptyRoomMessage.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        // let centerYConstraint = emptyRoomMessage.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        // let widthConstraint = emptyRoomMessage.widthAnchor.constraint(equalToConstant: 200)
+        // let heightConstraint = emptyRoomMessage.heightAnchor.constraint(equalToConstant: 100)
+
+        // // Activate the constraints
+        // NSLayoutConstraint.activate([centerXConstraint, centerYConstraint, widthConstraint, heightConstraint])
+        // // Do any additional setup after loading the view.
     }
     
     /*
