@@ -51,13 +51,13 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        if zoomInstance?.isInSession() {
+        if (zoomInstance?.isInSession() == true) {
             zoomInstance?.getVideoHelper().startVideo();
         }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        if zoomInstance?.isInSession() {
+        if (zoomInstance?.isInSession() == true) {
             zoomInstance?.getVideoHelper().stopVideo();
         }
     }
