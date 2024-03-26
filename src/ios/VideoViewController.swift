@@ -46,19 +46,26 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         bootStrapUITextView()
     }
 
+    deinit {
+        zoomInstance?.cleanup()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
-        subscribeUserView(view: myPreview, user: myself)
-        validateShowEmptyRoomMessage()
+        if zoomInstance?.isInSession() {
+            zoomInstance?.getVideoHelper().startVideo();
+        }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        if zoomInstance?.isInSession() {
+            zoomInstance?.getVideoHelper().stopVideo();
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         // Your code here to handle orientation change
         zoomInstance?.getVideoHelper().rotateMyVideo(UIDevice.current.orientation)
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        zoomInstance?.cleanup()
     }
     
     func onError(_ ErrorType: ZoomVideoSDKError, detail details: Int) {
@@ -72,6 +79,15 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
           print("Error \(ErrorType) \(details)")
           return
         }
+    }
+
+    func onSessionJoin() {
+        subscribeUserView(view: myPreview, user: myself)
+        validateShowEmptyRoomMessage()
+    }
+
+    func onSessionLeave() {
+        closeScreen()
     }
 
     func onUserJoin(_ helper: ZoomVideoSDKUserHelper?, users userArray: [ZoomVideoSDKUser]?) {
@@ -114,10 +130,6 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
                 secondPreview.isHidden = true
             }
         }
-    }
-
-    func onSessionLeave() {
-        closeScreen()
     }
     
     @IBAction func flipCameraButtonOnClick(_ sender: UIButton) {
