@@ -175,7 +175,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
             self.isVideoOn = false
         }
 
-        // zoomInstance?.leaveSession(false)
+        zoomInstance?.leaveSession(false)
     }
     
     func subscribeUserView(view:UIView, user: ZoomVideoSDKUser?){
