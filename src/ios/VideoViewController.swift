@@ -49,11 +49,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-        if !fromInterfaceOrientation.isPortrait {
-            zoomInstance?.getVideoHelper().rotateMyVideo(.portrait)
-        } else if !fromInterfaceOrientation.isLandscape{
-            zoomInstance?.getVideoHelper().rotateMyVideo(.landscapeLeft)
-        }
+        zoomInstance?.getVideoHelper().rotateMyVideo(fromInterfaceOrientation)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -72,6 +68,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
           return
         }
     }
+
     func onUserJoin(_ helper: ZoomVideoSDKUserHelper?, users userArray: [ZoomVideoSDKUser]?) {
         validateShowEmptyRoomMessage()
         for i in 0..<userArray!.count{
@@ -85,6 +82,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
             }
         }
     }
+
     func onUserActiveAudioChanged(_ helper: ZoomVideoSDKUserHelper?, users userArray: [ZoomVideoSDKUser]?) {
         for i in 0..<userArray!.count{
             if userOnSecondView == userArray![i]{
@@ -92,6 +90,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
             }
         }
     }
+
     func onUserLeave(_ helper: ZoomVideoSDKUserHelper?, users userArray: [ZoomVideoSDKUser]?) {
         validateShowEmptyRoomMessage()
         for i in 0..<userArray!.count{
@@ -111,6 +110,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
             }
         }
     }
+
     func onSessionLeave() {
         closeScreen()
     }
@@ -150,6 +150,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
                 }
             }
     }
+
     @IBAction func hangupOnClick(_ sender: UIButton) {
         // The web client expects that the participants will turn off the video before leaving the call
         if self.isVideoOn{
