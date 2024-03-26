@@ -31,6 +31,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         ZoomVideoSDK.shareInstance()?.delegate = self
         zoomInstance = ZoomVideoSDK.shareInstance()
         myself = zoomInstance?.getSession()?.getMySelf()
@@ -42,14 +43,16 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         emptyMessage = pasteboard.string
         bootStrapUITextView()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         subscribeUserView(view: myPreview, user: myself)
         validateShowEmptyRoomMessage()
     }
-    
-    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-        zoomInstance?.getVideoHelper().rotateMyVideo(fromInterfaceOrientation)
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        // Your code here to handle orientation change
+        zoomInstance?.getVideoHelper().rotateMyVideo(UIDevice.current.orientation)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
