@@ -591,8 +591,6 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                     this.primaryUser.getVideoCanvas().subscribe(this.primaryVideoView,
                             ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                             ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
-                } else {
-                    this.waitingMessageTextView.setVisibility(View.VISIBLE);
                 }
 
             } else if (this.secondaryThumbnailUser != null && this.secondaryThumbnailUser.getUserID().equals(user.getUserID())) {
