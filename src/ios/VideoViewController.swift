@@ -87,7 +87,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     }
 
     func onSessionLeave() {
-        closeScreen()
+        self.dismiss(animated: true)
     }
 
     func onUserJoin(_ helper: ZoomVideoSDKUserHelper?, users userArray: [ZoomVideoSDKUser]?) {
@@ -175,7 +175,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
             self.isVideoOn = false
         }
 
-        zoomInstance?.leaveSession(false)
+        // zoomInstance?.leaveSession(false)
     }
     
     func subscribeUserView(view:UIView, user: ZoomVideoSDKUser?){
@@ -200,10 +200,6 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         } else {
             secondPreview.isHidden = true
         }
-    }
-
-    func closeScreen(){
-        self.dismiss(animated: true)
     }
     
     func validateShowEmptyRoomMessage(){
