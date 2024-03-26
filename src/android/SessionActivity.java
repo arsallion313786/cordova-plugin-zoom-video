@@ -118,6 +118,8 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     private AlertDialog alertDialog;
     private AudioManager audioManager;
 
+    private boolean shouldVideoBeOn = false;
+
     private Context context;
     final String LAYOUT = "layout";
     final String STRING = "string";
@@ -291,12 +293,14 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                 if (myUser.getVideoCanvas().getVideoStatus().isOn()) {
 
                     videoHelper.stopVideo();
+                    shouldVideoBeOn = false;
 
                     icon = getResourceId(context,DRAWABLE,("ic_videocam_off_red_24px"));
                     switchCameraActionFab.hide();
                 } else {
 
                     videoHelper.startVideo();
+                    shouldVideoBeOn = true;
 
                     icon = getResourceId(context,DRAWABLE,("ic_videocam_green_24px"));
                     switchCameraActionFab.show();
@@ -413,16 +417,16 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
 
     @Override
     protected void onResume() {
+        super.onResume();
+        ZoomVideoSDK sdk = ZoomVideoSDK.getInstance();
+        Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+        sdk.getVideoHelper().rotateMyVideo(display.getRotation());
+
         /*
          * If the video was stopped when the app was put in the background, start again.
          */
-        super.onResume();
-        ZoomVideoSDK sdk = ZoomVideoSDK.getInstance();
-        if(sdk.isInSession()) {
-            Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-
+        if(sdk.isInSession() && shouldVideoBeOn) {
             sdk.getVideoHelper().startVideo();
-            sdk.getVideoHelper().rotateMyVideo(display.getRotation());
         }
     }
 
@@ -432,7 +436,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
          * Stop video before going in the background. This ensures that the
          * camera can be used by other applications while this app is in the background.
          */
-        if(ZoomVideoSDK.getInstance().isInSession()) {
+        if(ZoomVideoSDK.getInstance().isInSession() && shouldVideoBeOn) {
             ZoomVideoSDK.getInstance().getVideoHelper().stopVideo();
         }
         super.onPause();
@@ -458,6 +462,8 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         ZoomVideoSDKAudioHelper audioHelper = sdk.getAudioHelper();
         videoHelper.stopVideo();
         audioHelper.stopAudio();
+
+        shouldVideoBeOn = false;
 
         sdk.leaveSession(false);
         sdk.cleanup();
@@ -515,6 +521,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         ZoomVideoSDKVideoHelper videoHelper = sdk.getVideoHelper();
         if (!myCanvas.getVideoStatus().isOn()) {
             videoHelper.startVideo();
+            shouldVideoBeOn = true;
         } else {
             Log.i("SessionActivity", "Video was already started onSessionJoin");
         }
