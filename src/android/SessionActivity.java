@@ -92,6 +92,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
     private String sessionName;
     private String userName;
     private String domain;
+    private String startingWaitingMessage;
 
     /*
      * Video views.
@@ -401,7 +402,9 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         this.sessionName = intent.getStringExtra("sessionName");
         this.userName = intent.getStringExtra("userName");
         this.domain = intent.getStringExtra("domain");
-        waitingMessageTextView.setText(intent.getStringExtra("waitingMessage"));
+        this.startingWaitingMessage = intent.getStringExtra("waitingMessage");
+
+        waitingMessageTextView.setText(this.startingWaitingMessage);
 
         initializeSDK();
 
@@ -598,6 +601,9 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                     this.primaryUser.getVideoCanvas().subscribe(this.primaryVideoView,
                             ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                             ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+                } else {
+                    waitingMessageTextView.setText("");
+                    this.waitingMessageTextView.setVisibility(View.VISIBLE);
                 }
 
             } else if (this.secondaryThumbnailUser != null && this.secondaryThumbnailUser.getUserID().equals(user.getUserID())) {
