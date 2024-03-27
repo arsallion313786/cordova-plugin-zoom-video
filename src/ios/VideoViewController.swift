@@ -26,9 +26,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     var zoomInstance: ZoomVideoSDK?
     var emptyMessage: String?
     
-    var isVideoOn: Bool = true
-    var isAudioOn: Bool = true
-    
+    var shouldVideoBeOn: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,13 +49,20 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        if (zoomInstance?.isInSession() == true) {
+        /*
+         * If the video was stopped when the app was put in the background, start again.
+         */
+        if (zoomInstance?.isInSession() == true && shouldVideoBeOn == true) {
             zoomInstance?.getVideoHelper().startVideo();
         }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        if (zoomInstance?.isInSession() == true) {
+        /*
+         * Stop video before going in the background. This ensures that the
+         * camera can be used by other applications while this app is in the background.
+         */
+        if (zoomInstance?.isInSession() == true && shouldVideoBeOn == true) {
             zoomInstance?.getVideoHelper().stopVideo();
         }
     }
@@ -83,6 +88,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
 
     func onSessionJoin() {
         subscribeUserView(view: myPreview, user: myself)
+        self.shouldVideoBeOn = true
         validateShowEmptyRoomMessage()
     }
 
@@ -105,11 +111,11 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     }
 
     func onUserActiveAudioChanged(_ helper: ZoomVideoSDKUserHelper?, users userArray: [ZoomVideoSDKUser]?) {
-        for i in 0..<userArray!.count{
-            if userOnSecondView == userArray![i]{
-                switchMainUserWithSecondaryUser()
-            }
-        }
+        // for i in 0..<userArray!.count{
+        //     if userOnSecondView == userArray![i]{
+        //         switchMainUserWithSecondaryUser()
+        //     }
+        // }
     }
 
     func onUserLeave(_ helper: ZoomVideoSDKUserHelper?, users userArray: [ZoomVideoSDKUser]?) {
@@ -137,15 +143,16 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     }
     
     @IBAction func toggleVideoOnClick(_ sender: UIButton) {
-        if self.isVideoOn{
+        let isVideoOn: Bool = zoomInstance?.getSession().getMySelf().getVideoCanvas().getVideoStatus().isOn()
+        if isVideoOn{
             zoomInstance?.getVideoHelper().stopVideo()
-            self.isVideoOn = false
+            self.shouldVideoBeOn = false
             if let image = UIImage(named: "ic_video_off_114.png"){
                 toggleVideoButton.setImage(image, for: .normal)
             }
         } else {
             zoomInstance?.getVideoHelper().startVideo()
-            self.isVideoOn = true
+            self.shouldVideoBeOn = true
             if let image = UIImage(named: "ic_video_on_114.png"){
                 toggleVideoButton.setImage(image, for: .normal)
             }
@@ -153,26 +160,25 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     }
     
     @IBAction func muteButtonOnClick(_ sender: UIButton) {
-            if self.isAudioOn{
-                zoomInstance?.getAudioHelper().muteAudio(myself)
-                self.isAudioOn = false
-                if let image = UIImage(named: "ic_mic_off_114.png"){
-                    toggleMicButton.setImage(image, for: .normal)
-                }
-            } else {
-                zoomInstance?.getAudioHelper().unmuteAudio(myself)
-                self.isAudioOn = true
-                if let image = UIImage(named: "ic_mic_on_114.png"){
-                    toggleMicButton.setImage(image, for: .normal)
-                }
+        let isMuted: Bool = zoomInstance?.getSession().getMySelf().getAudioStatus().isMuted()
+        if isMuted{
+            zoomInstance?.getAudioHelper().unmuteAudio(myself)
+            if let image = UIImage(named: "ic_mic_on_114.png"){
+                toggleMicButton.setImage(image, for: .normal)
             }
+        } else {
+            zoomInstance?.getAudioHelper().muteAudio(myself)
+            if let image = UIImage(named: "ic_mic_off_114.png"){
+                toggleMicButton.setImage(image, for: .normal)
+            }
+        }
     }
 
     @IBAction func hangupOnClick(_ sender: UIButton) {
         // The web client expects that the participants will turn off the video before leaving the call
-        if self.isVideoOn{
+        if self.shouldVideoBeOn{
             zoomInstance?.getVideoHelper().stopVideo()
-            self.isVideoOn = false
+            self.shouldVideoBeOn = false
         }
 
         zoomInstance?.leaveSession(false)
