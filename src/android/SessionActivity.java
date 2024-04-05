@@ -635,11 +635,25 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                     shareCanvas.subscribe(this.primaryVideoView,
                             ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                             ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+                } else if (this.secondaryThumbnailUser != null && this.secondaryThumbnailUser.getUserID().equals(userInfo.getUserID())) {
+                    shareCanvas.subscribe(this.secondaryThumbnailVideoView,
+                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
+                            ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
                 }
                 break;
             case ZoomVideoSDKShareStatus_Pause:
             case ZoomVideoSDKShareStatus_Stop:
                 // The user with the corresponding userInfo is not sharing
+                ZoomVideoSDKVideoCanvas videoCanvas = userInfo.getVideoCanvas();
+                if (this.primaryUser != null && this.primaryUser.getUserID().equals(userInfo.getUserID())) {
+                    videoCanvas.subscribe(this.primaryVideoView,
+                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
+                            ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+                } else if (this.secondaryThumbnailUser != null && this.secondaryThumbnailUser.getUserID().equals(userInfo.getUserID())) {
+                    videoCanvas.subscribe(this.secondaryThumbnailVideoView,
+                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
+                            ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+                }
                 break;
         }
     }
