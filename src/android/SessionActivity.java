@@ -236,14 +236,26 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         ZoomVideoSDKUser auxUser = this.secondaryThumbnailUser;
         this.secondaryThumbnailUser = this.primaryUser;
         this.primaryUser = auxUser;
-
-        this.primaryUser.getVideoCanvas().subscribe(this.primaryVideoView,
-                ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
-                ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
-
-        this.secondaryThumbnailUser.getVideoCanvas().subscribe(this.secondaryThumbnailVideoView,
-                ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
-                ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+        // Subscribe to screen share instead of video if it on.
+        if (this.primaryUser.getShareCanvas().getVideoStatus().isOn()) {
+            this.primaryUser.getShareCanvas().subscribe(this.primaryVideoView,
+                    ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
+                    ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+        } else {
+            this.primaryUser.getVideoCanvas().subscribe(this.primaryVideoView,
+                    ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
+                    ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+        }
+        // Subscribe to screen share instead of video if it on.
+        if (this.secondaryThumbnailUser.getShareCanvas().getVideoStatus().isOn()) {
+            this.secondaryThumbnailUser.getShareCanvas().subscribe(this.secondaryThumbnailVideoView,
+                    ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
+                    ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+        } else {
+            this.secondaryThumbnailUser.getVideoCanvas().subscribe(this.secondaryThumbnailVideoView,
+                    ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
+                    ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+        }
     }
 
     private View.OnClickListener setSecondaryAsPrimaryView() {
