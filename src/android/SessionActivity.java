@@ -626,7 +626,22 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
 
     @Override
     public void onUserShareStatusChanged(ZoomVideoSDKShareHelper shareHelper, ZoomVideoSDKUser userInfo, ZoomVideoSDKShareStatus status) {
-
+        switch (status) {
+            case ZoomVideoSDKShareStatus_Resume:
+            case ZoomVideoSDKShareStatus_Start:
+                // The user with the corresponding userInfo is now sharing
+                ZoomVideoSDKVideoCanvas shareCanvas = userInfo.getShareCanvas();
+                if (this.primaryUser != null && this.primaryUser.getUserID().equals(userInfo.getUserID())) {
+                    shareCanvas.subscribe(this.primaryVideoView,
+                            ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
+                            ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
+                }
+                break;
+            case ZoomVideoSDKShareStatus_Pause:
+            case ZoomVideoSDKShareStatus_Stop:
+                // The user with the corresponding userInfo is not sharing
+                break;
+        }
     }
 
     @Override
