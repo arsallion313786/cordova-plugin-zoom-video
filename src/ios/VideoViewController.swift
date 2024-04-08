@@ -43,6 +43,12 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         emptyMessage = pasteboard.string
 
         bootStrapUITextView()
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(self.secondaryViewOnClick))
+        secondPreview.addGestureRecognizer(gesture)
+    }
+    
+    @objc func secondaryViewOnClick(){
+        switchMainUserWithSecondaryUser()
     }
 
     deinit {
@@ -110,7 +116,8 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
             }
         }
     }
-
+    
+    
     func onUserActiveAudioChanged(_ helper: ZoomVideoSDKUserHelper?, users userArray: [ZoomVideoSDKUser]?) {
         // for i in 0..<userArray!.count{
         //     if userOnSecondView == userArray![i]{
@@ -185,6 +192,8 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         zoomInstance?.leaveSession(false)
     }
     
+    
+    
     func subscribeUserView(view:UIView, user: ZoomVideoSDKUser?){
         if let usersVideoCanvas = user?.getVideoCanvas() {
             // Set video aspect.
@@ -252,6 +261,32 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         NSLayoutConstraint.activate([centerXConstraint, centerYConstraint, widthConstraint, heightConstraint])
         // Do any additional setup after loading the view.
     }
+    
+ 
+    
+    
+    func onUserShareStatusChanged(_ helper: ZoomVideoSDKShareHelper?, user: ZoomVideoSDKUser?, status: ZoomVideoSDKReceiveSharingStatus) {
+            let videoAspect = ZoomVideoSDKVideoAspect.panAndScan
+            let resolution = ZoomVideoSDKVideoResolution._Auto
+            switch status {
+                    case .start:
+                if let usersShareCanvas = user?.getShareCanvas(){
+                            if user?.getID() == userOnMainView?.getID(){
+                                usersShareCanvas.subscribe(with: secondPreview, aspectMode: videoAspect, andResolution: resolution)
+                            } else {
+                                usersShareCanvas.subscribe(with: secondPreview, aspectMode: videoAspect, andResolution: resolution)
+                            }
+                        }
+                case .stop:
+                    if user == userOnSecondView{
+                        subscribeUserView(view: secondPreview, user: userOnSecondView)
+                    } else{
+                        subscribeUserView(view: mainView, user: userOnMainView)
+                    }
+                default:
+                    break
+            }
+        }
     
     /*
     // MARK: - Navigation
