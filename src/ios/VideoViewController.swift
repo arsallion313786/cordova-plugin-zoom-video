@@ -25,7 +25,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     var userOnSecondView: ZoomVideoSDKUser?
     var zoomInstance: ZoomVideoSDK?
     var emptyMessage: String?
-    
+
     var isVideoOn: Bool = true
     var isAudioOn: Bool = true
     
@@ -78,6 +78,8 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         super.viewWillTransition(to: size, with: coordinator)
         // Your code here to handle orientation change
         zoomInstance?.getVideoHelper().rotateMyVideo(UIDevice.current.orientation)
+        subscribeUserView(view: mainView, user: userOnMainView)
+        subscribeUserView(view: secondPreview, user: userOnSecondView)
     }
     
     func onError(_ ErrorType: ZoomVideoSDKError, detail details: Int) {
@@ -195,12 +197,18 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     
     
     func subscribeUserView(view:UIView, user: ZoomVideoSDKUser?){
-        if let usersVideoCanvas = user?.getVideoCanvas() {
-            // Set video aspect.
-            let videoAspect = ZoomVideoSDKVideoAspect.panAndScan
-            let resolution = ZoomVideoSDKVideoResolution._Auto
-            // Subscribe User's videoCanvas to render their video stream.
-            usersVideoCanvas.subscribe(with: view, aspectMode: videoAspect, andResolution: resolution)
+        let videoAspect = ZoomVideoSDKVideoAspect.panAndScan
+        let resolution = ZoomVideoSDKVideoResolution._Auto
+        
+        // If user is sharing, subscribe users share video. If not, try user camera video.
+        if user != nil{
+            if user?.getShareCanvas()?.shareStatus()?.sharingStatus != ZoomVideoSDKReceiveSharingStatus.none{
+                if let usersVideoCanvas = user?.getShareCanvas(){
+                    usersVideoCanvas.subscribe(with: view, aspectMode: .letterBox, andResolution: resolution)
+                }
+            } else if let usersVideoCanvas = user?.getVideoCanvas() {
+                usersVideoCanvas.subscribe(with: view, aspectMode: videoAspect, andResolution: resolution)
+            }
         }
     }
     
@@ -271,16 +279,22 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
             switch status {
                     case .start:
                 if let usersShareCanvas = user?.getShareCanvas(){
-                            if user?.getID() == userOnMainView?.getID(){
-                                usersShareCanvas.subscribe(with: mainView, aspectMode: videoAspect, andResolution: resolution)
-                            } else {
-                                usersShareCanvas.subscribe(with: secondPreview, aspectMode: videoAspect, andResolution: resolution)
-                            }
+//                            if user?.getID() == userOnMainView?.getID(){
+//                                isMainUserSharing = true
+//                                usersShareCanvas.subscribe(with: mainView, aspectMode: videoAspect, andResolution: resolution)
+//                            } else {
+//                                isSecondUserSharing = true
+//                                usersShareCanvas.subscribe(with: secondPreview, aspectMode: videoAspect, andResolution: resolution)
+//                            }
+                        if user?.getID() == userOnMainView?.getID(){
+                            subscribeUserView(view: mainView, user: userOnMainView)
+                        } else {                        subscribeUserView(view: secondPreview, user: userOnSecondView)
                         }
+                    }
                 case .stop:
                     if user?.getID() == userOnMainView?.getID(){
                         subscribeUserView(view: mainView, user: userOnMainView)
-                    } else {
+                    } else {                        
                         subscribeUserView(view: secondPreview, user: userOnSecondView)
                     }
                 default:
