@@ -78,6 +78,9 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         super.viewWillTransition(to: size, with: coordinator)
         // Your code here to handle orientation change
         zoomInstance?.getVideoHelper().rotateMyVideo(UIDevice.current.orientation)
+    }
+    
+    override func viewDidLayoutSubviews() {
         subscribeUserView(view: mainView, user: userOnMainView)
         subscribeUserView(view: secondPreview, user: userOnSecondView)
     }
@@ -204,7 +207,8 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         if user != nil{
             if user?.getShareCanvas()?.shareStatus()?.sharingStatus != ZoomVideoSDKReceiveSharingStatus.none{
                 if let usersVideoCanvas = user?.getShareCanvas(){
-                    usersVideoCanvas.subscribe(with: view, aspectMode: .letterBox, andResolution: resolution)
+                    usersVideoCanvas.unSubscribe(with: view)
+                    usersVideoCanvas.subscribe(with: view, aspectMode: videoAspect, andResolution: resolution)
                 }
             } else if let usersVideoCanvas = user?.getVideoCanvas() {
                 usersVideoCanvas.subscribe(with: view, aspectMode: videoAspect, andResolution: resolution)
@@ -274,28 +278,16 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     
     
     func onUserShareStatusChanged(_ helper: ZoomVideoSDKShareHelper?, user: ZoomVideoSDKUser?, status: ZoomVideoSDKReceiveSharingStatus) {
-            let videoAspect = ZoomVideoSDKVideoAspect.panAndScan
-            let resolution = ZoomVideoSDKVideoResolution._Auto
             switch status {
                     case .start:
-                if let usersShareCanvas = user?.getShareCanvas(){
-//                            if user?.getID() == userOnMainView?.getID(){
-//                                isMainUserSharing = true
-//                                usersShareCanvas.subscribe(with: mainView, aspectMode: videoAspect, andResolution: resolution)
-//                            } else {
-//                                isSecondUserSharing = true
-//                                usersShareCanvas.subscribe(with: secondPreview, aspectMode: videoAspect, andResolution: resolution)
-//                            }
                         if user?.getID() == userOnMainView?.getID(){
                             subscribeUserView(view: mainView, user: userOnMainView)
                         } else {                        subscribeUserView(view: secondPreview, user: userOnSecondView)
                         }
-                    }
                 case .stop:
                     if user?.getID() == userOnMainView?.getID(){
                         subscribeUserView(view: mainView, user: userOnMainView)
-                    } else {                        
-                        subscribeUserView(view: secondPreview, user: userOnSecondView)
+                    } else {                        subscribeUserView(view: secondPreview, user: userOnSecondView)
                     }
                 default:
                     break
