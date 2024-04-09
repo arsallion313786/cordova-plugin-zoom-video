@@ -272,16 +272,16 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
                     case .start:
                 if let usersShareCanvas = user?.getShareCanvas(){
                             if user?.getID() == userOnMainView?.getID(){
-                                usersShareCanvas.subscribe(with: secondPreview, aspectMode: videoAspect, andResolution: resolution)
+                                usersShareCanvas.subscribe(with: mainView, aspectMode: videoAspect, andResolution: resolution)
                             } else {
                                 usersShareCanvas.subscribe(with: secondPreview, aspectMode: videoAspect, andResolution: resolution)
                             }
                         }
                 case .stop:
-                    if user == userOnSecondView{
-                        subscribeUserView(view: secondPreview, user: userOnSecondView)
-                    } else{
+                    if user?.getID() == userOnMainView?.getID(){
                         subscribeUserView(view: mainView, user: userOnMainView)
+                    } else {
+                        subscribeUserView(view: secondPreview, user: userOnSecondView)
                     }
                 default:
                     break
