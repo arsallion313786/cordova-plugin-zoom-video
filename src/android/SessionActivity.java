@@ -237,7 +237,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
         this.secondaryThumbnailUser = this.primaryUser;
         this.primaryUser = auxUser;
         // Subscribe to screen share instead of video if it on.
-        if (this.primaryUser.getShareCanvas().getVideoStatus().isOn()) {
+        if (this.primaryUser.getShareCanvas().getShareStatus() != ZoomVideoSDKShareStatus.ZoomVideoSDKShareStatus_None) {
             this.primaryUser.getShareCanvas().subscribe(this.primaryVideoView,
                     ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                     ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
@@ -247,7 +247,7 @@ public class SessionActivity extends AppCompatActivity implements ZoomVideoSDKDe
                     ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
         }
         // Subscribe to screen share instead of video if it on.
-        if (this.secondaryThumbnailUser.getShareCanvas().getVideoStatus().isOn()) {
+        if (this.secondaryThumbnailUser.getShareCanvas().getShareStatus() != ZoomVideoSDKShareStatus.ZoomVideoSDKShareStatus_None) {
             this.secondaryThumbnailUser.getShareCanvas().subscribe(this.secondaryThumbnailVideoView,
                     ZoomVideoSDKVideoAspect.ZoomVideoSDKVideoAspect_PanAndScan,
                     ZoomVideoSDKVideoResolution.ZoomVideoSDKResolution_Auto);
