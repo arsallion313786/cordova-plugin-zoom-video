@@ -39,7 +39,7 @@
          * if you don't need screen share, please delete ZoomVideoSDKScreenShare target.
          *
          */
-        params.appGroupId = @"group.379BU9KMSX.com.3dvision.daarisLiveApp"; // please input group id from the Apple Developer Web site.
+        params.appGroupId = @""; // please input group id from the Apple Developer Web site.
         params.isWithDeviceAudio = YES;
         
         ZoomVideoSDKScreenShareService * service = [[ZoomVideoSDKScreenShareService alloc]initWithParams:params];
