@@ -36,7 +36,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
         zoomInstance = ZoomVideoSDK.shareInstance()
         myself = zoomInstance?.getSession()?.getMySelf()
         secondPreview.isHidden = true
-        zoomInstance?.getVideoHelper().mirrorMyVideo(true)
+        zoomInstance?.getVideoHelper()?.mirrorMyVideo(true)
         hangUpButton.layer.cornerRadius = 20
         
         let pasteboard = UIPasteboard.general
@@ -60,7 +60,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
          * If the video was stopped when the app was put in the background, start again.
          */
         if (zoomInstance?.isInSession() == true && self.isVideoOn == true) {
-            zoomInstance?.getVideoHelper().startVideo();
+            zoomInstance?.getVideoHelper()?.startVideo();
         }
     }
 
@@ -70,14 +70,14 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
          * camera can be used by other applications while this app is in the background.
          */
         if (zoomInstance?.isInSession() == true && self.isVideoOn == true) {
-            zoomInstance?.getVideoHelper().stopVideo();
+            zoomInstance?.getVideoHelper()?.stopVideo();
         }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         // Your code here to handle orientation change
-        zoomInstance?.getVideoHelper().rotateMyVideo(UIDevice.current.orientation)
+        zoomInstance?.getVideoHelper()?.rotateMyVideo(UIDevice.current.orientation)
     }
     
     override func viewDidLayoutSubviews() {
@@ -152,18 +152,18 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     }
     
     @IBAction func flipCameraButtonOnClick(_ sender: UIButton) {
-        zoomInstance?.getVideoHelper().switchCamera()
+        zoomInstance?.getVideoHelper()?.switchCamera()
     }
     
     @IBAction func toggleVideoOnClick(_ sender: UIButton) {
         if self.isVideoOn{
-            zoomInstance?.getVideoHelper().stopVideo()
+            zoomInstance?.getVideoHelper()?.stopVideo()
             self.isVideoOn = false
             if let image = UIImage(named: "ic_video_off_114.png"){
                 toggleVideoButton.setImage(image, for: .normal)
             }
         } else {
-            zoomInstance?.getVideoHelper().startVideo()
+            zoomInstance?.getVideoHelper()?.startVideo()
             self.isVideoOn = true
             if let image = UIImage(named: "ic_video_on_114.png"){
                 toggleVideoButton.setImage(image, for: .normal)
@@ -173,13 +173,13 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     
     @IBAction func muteButtonOnClick(_ sender: UIButton) {
         if self.isAudioOn{
-            zoomInstance?.getAudioHelper().muteAudio(myself)
+            zoomInstance?.getAudioHelper()?.muteAudio(myself)
             self.isAudioOn = false
             if let image = UIImage(named: "ic_mic_off_114.png"){
                 toggleMicButton.setImage(image, for: .normal)
             }
         } else {
-            zoomInstance?.getAudioHelper().unmuteAudio(myself)
+            zoomInstance?.getAudioHelper()?.unmuteAudio(myself)
             self.isAudioOn = true
             if let image = UIImage(named: "ic_mic_on_114.png"){
                 toggleMicButton.setImage(image, for: .normal)
@@ -190,7 +190,7 @@ class VideoViewController: UIViewController, ZoomVideoSDKDelegate {
     @IBAction func hangupOnClick(_ sender: UIButton) {
         // The web client expects that the participants will turn off the video before leaving the call
         if self.isVideoOn{
-            zoomInstance?.getVideoHelper().stopVideo()
+            zoomInstance?.getVideoHelper()?.stopVideo()
             self.isVideoOn = false
         }
 
