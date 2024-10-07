@@ -75,6 +75,20 @@
     <platform name="ios">
         <source-file src="src/ios/ZoomVideo.swift"/>
         <source-file src="src/ios/VideoViewController.swift"/>
+        <source-file src="src/ios/AppConstants.swift"/>
+        <source-file src="src/ios/Bupa+Date.swift"/>
+        <source-file src="src/ios/Bupa+View.swift"/>
+        <source-file src="src/ios/BupaBaseVC.swift"/>
+        <source-file src="src/ios/CallKitManager.swift"/>
+        <source-file src="src/ios/ChatTableHandler.swift"/>
+        <source-file src="src/ios/ConsulationMeetingVC.swift"/>
+        <source-file src="src/ios/SDKPiPHelper.swift"/>
+        <source-file src="src/ios/SDKPiPWindowView.swift"/>
+        <source-file src="src/ios/UIView+Extenstion.swift"/>
+        <source-file src="src/ios/ZoomChannelConstants.swift"/>
+        <source-file src="src/ios/ZoomChatVC.swift"/>
+        <source-file src="src/ios/ZoomView.swift"/>
+        <source-file src="src/ios/ZoomChatCell.swift"/>
 
         <config-file parent="ENABLE_BITCODE" target="build.xcconfig">
             <false/>
@@ -112,6 +126,8 @@
         <framework src="src/ios/CptShare.xcframework" custom="true" embed="true" link="true"/>
 
 		<resource-file src="src/ios/Resources/VideoCall.storyboard" target="Resources/VideoCall.storyboard" />
+        <resource-file src="src/ios/Resources/ZoomChatCell.xib" target="Resources/ZoomChatCell.xib" />
+        <resource-file src="src/ios/Resources/Consultation.storyboard" target="Resources/Consultation.storyboard" />
         <resource-file src="src/ios/Resources/end-call-ios-white-33px.png" target="Resources/end-call-ios-white-33px.png" />
 		<resource-file src="src/ios/Resources/ic_end_call_114.png" target="Resources/ic_end_call_114.png" />
         <resource-file src="src/ios/Resources/ic_end_call_120.png" target="Resources/ic_end_call_120.png" />
