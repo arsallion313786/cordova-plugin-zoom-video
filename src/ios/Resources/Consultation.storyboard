@@ -77,11 +77,11 @@
                                     <constraint firstAttribute="width" constant="80" id="hgE-bd-Rl8"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain">
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <imageReference key="image" image="phone.down.fill" catalog="system" symbolScale="large"/>
-                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </buttonConfiguration>
+                                </state>
                                 <connections>
                                     <action selector="btnCloseSessionPressed:" destination="EvF-HB-Wij" eventType="touchUpInside" id="PJf-Bb-ha3"/>
                                 </connections>
@@ -96,12 +96,12 @@
                                     <constraint firstAttribute="width" constant="36" id="04H-pr-jf2"/>
                                     <constraint firstAttribute="height" constant="36" id="b8S-mI-DgD"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="tinted" cornerStyle="large">
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <imageReference key="image" image="chart.bar.horizontal.page" catalog="system" symbolScale="medium"/>
-                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="baseBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </buttonConfiguration>
+                                </state>
                                 <connections>
                                     <action selector="btnChatPressed:" destination="EvF-HB-Wij" eventType="touchUpInside" id="o0e-tt-RAO"/>
                                 </connections>
@@ -112,12 +112,12 @@
                                     <constraint firstAttribute="width" constant="36" id="KuV-tD-4oq"/>
                                     <constraint firstAttribute="height" constant="36" id="fh4-fb-2Zj"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="tinted" cornerStyle="large">
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <imageReference key="image" image="shareplay.slash" catalog="system" symbolScale="medium"/>
-                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="baseBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </buttonConfiguration>
+                                </state>
                                 <connections>
                                     <action selector="btnShareScreenPressed:" destination="EvF-HB-Wij" eventType="touchUpInside" id="L6h-f5-KFj"/>
                                 </connections>
@@ -128,12 +128,12 @@
                                     <constraint firstAttribute="width" constant="36" id="6oy-Nr-cVa"/>
                                     <constraint firstAttribute="height" constant="36" id="l2i-uS-yD1"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="tinted" cornerStyle="large">
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <imageReference key="image" image="speaker" catalog="system" symbolScale="medium"/>
-                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="baseBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </buttonConfiguration>
+                                </state>
                                 <connections>
                                     <action selector="btnSwitchSpeakerPressed:" destination="EvF-HB-Wij" eventType="touchUpInside" id="iWk-p2-TP8"/>
                                 </connections>
@@ -144,12 +144,12 @@
                                     <constraint firstAttribute="width" constant="36" id="BTz-NE-bOg"/>
                                     <constraint firstAttribute="height" constant="36" id="hvn-Yd-PVr"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="tinted" cornerStyle="large">
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <imageReference key="image" image="mic.slash" catalog="system" symbolScale="medium"/>
-                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="baseBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </buttonConfiguration>
+                                </state>
                                 <connections>
                                     <action selector="btnAudioTogglePressed:" destination="EvF-HB-Wij" eventType="touchUpInside" id="52u-XK-s6a"/>
                                 </connections>
@@ -175,11 +175,12 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JMc-Wo-6lK">
-                                <rect key="frame" x="299.66666666666669" y="92" width="55.333333333333314" height="34"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="camera.fill" catalog="system">
-                                    <color key="baseForegroundColor" name="primaryTitleColor"/>
-                                </buttonConfiguration>
+                                <rect key="frame" x="323.33333333333331" y="92" width="31.666666666666686" height="24.333333333333329"/>
+                                <color key="tintColor" red="0.050980392159999999" green="0.094117647060000004" blue="0.27450980390000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="camera.fill" catalog="system">
+                                    <color key="titleColor" name="primaryTitleColor"/>
+                                </state>
                                 <connections>
                                     <action selector="btnSwitchCameraPressed:" destination="EvF-HB-Wij" eventType="touchUpInside" id="qGq-us-7vf"/>
                                 </connections>
@@ -268,11 +269,11 @@
                                     <constraint firstAttribute="width" constant="35" id="gos-nK-UeF"/>
                                     <constraint firstAttribute="height" constant="35" id="xkM-ns-JWL"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain">
+                                <color key="tintColor" red="0.050980392159999999" green="0.094117647060000004" blue="0.27450980390000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
                                     <imageReference key="image" image="paperplane.fill" catalog="system" symbolScale="large"/>
-                                    <color key="baseForegroundColor" name="primaryTitleColor"/>
-                                </buttonConfiguration>
+                                </state>
                                 <connections>
                                     <action selector="btnSendChatMessagePressed:" destination="tXg-2I-c0P" eventType="touchUpInside" id="cdb-qQ-KkE"/>
                                 </connections>
