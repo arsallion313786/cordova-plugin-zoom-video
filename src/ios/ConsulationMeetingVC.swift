@@ -102,14 +102,22 @@ private extension ConsulationMeetingVC{
             print("audioSession error: \(error.localizedDescription)")
         }
         
-        self.btnSpeakerIcon.setImage(UIImage(systemName:isSpeakerOn ? "speaker" :  "speaker.slash"), for: .normal)
+        if #available(iOS 13.0, *) {
+            self.btnSpeakerIcon.setImage(UIImage(systemName:isSpeakerOn ? "speaker" :  "speaker.slash"), for: .normal)
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     @IBAction func btnChatPressed(_ sender:UIButton){
         self.chatVc = nil;
-        self.chatVc =  self.storyboard?.instantiateViewController(identifier: "ZoomChatVC", creator: { coder in
-            ZoomChatVC(arrChatMessages: self.arrChatMessages, coder: coder);
-        })
+        if #available(iOS 13.0, *) {
+            self.chatVc =  self.storyboard?.instantiateViewController(identifier: "ZoomChatVC", creator: { coder in
+                ZoomChatVC(arrChatMessages: self.arrChatMessages, coder: coder);
+            })
+        } else {
+            // Fallback on earlier versions
+        }
         
         if let vc =  self.chatVc{
             self.present(vc, animated: true)
@@ -124,7 +132,11 @@ private extension ConsulationMeetingVC{
     }
     
     @IBAction func btnShareScreenPressed(_ sender:UIButton){
-        self.checkAndStartShareScreenProcess();
+        if #available(iOS 12.0, *) {
+            self.checkAndStartShareScreenProcess()
+        } else {
+            // Fallback on earlier versions
+        };
     }
 }
 
@@ -136,7 +148,11 @@ private extension ConsulationMeetingVC{
         self.setUI();
         self.setData();
         if let user = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf(){
-            SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
+            if #available(iOS 15.0, *) {
+                SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
     
@@ -181,7 +197,7 @@ private extension ConsulationMeetingVC{
         
         let circleShape = CAShapeLayer()
         circleShape.path = circlePath.cgPath
-        circleShape.fillRule = .evenOdd
+        //circleShape.fillRule = .evenOdd
         bottomActionView.layer.mask = circleShape;
     }
     
@@ -197,14 +213,26 @@ private extension ConsulationMeetingVC{
         let user = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf();
         if(user?.audioStatus()?.audioType != ZoomVideoSDKAudioType.none){
             if(user?.audioStatus()?.isMuted ?? true){
-                self.btnAudioIcon.setImage(UIImage(systemName: "mic.slash"), for: .normal);
+                if #available(iOS 13.0, *) {
+                    self.btnAudioIcon.setImage(UIImage(systemName: "mic.slash"), for: .normal)
+                } else {
+                    // Fallback on earlier versions
+                };
             }
             else{
-                self.btnAudioIcon.setImage(UIImage(systemName: "mic"), for: .normal);
+                if #available(iOS 13.0, *) {
+                    self.btnAudioIcon.setImage(UIImage(systemName: "mic"), for: .normal)
+                } else {
+                    // Fallback on earlier versions
+                };
             }
         }
         else{
-            self.btnAudioIcon.setImage(UIImage(systemName: "mic.slash"), for: .normal);
+            if #available(iOS 13.0, *) {
+                self.btnAudioIcon.setImage(UIImage(systemName: "mic.slash"), for: .normal)
+            } else {
+                // Fallback on earlier versions
+            };
         }
         
     }
@@ -246,6 +274,7 @@ private extension ConsulationMeetingVC{
         
     }
     
+    @available(iOS 12.0, *)
     func checkAndStartShareScreenProcess(){
         if(ZoomVideoSDK.shareInstance()?.getShareHelper()?.isShareLocked() ?? false){
             self.showSnackbar(message: "Share is locked by admin");
@@ -267,17 +296,22 @@ private extension ConsulationMeetingVC{
     }
     
     func sendTouchDownEventToBroadcastButton(){
-        let broadcastView:RPSystemBroadcastPickerView?  = self.view.viewWithTag(1000000) as? RPSystemBroadcastPickerView;
-        guard let broadcastView else { return;}
-        
-        for subView in broadcastView.subviews{
-            if subView.isKind(of: UIButton.self){
-                let broadcastBtn = subView as! UIButton
-                broadcastBtn.sendActions(for: .allTouchEvents)
-                break;
-                
+        if #available(iOS 12.0, *) {
+            let broadcastView:RPSystemBroadcastPickerView?  = self.view.viewWithTag(1000000) as? RPSystemBroadcastPickerView
+            guard let broadcastView else { return;}
+            
+            for subView in broadcastView.subviews{
+                if subView.isKind(of: UIButton.self){
+                    let broadcastBtn = subView as! UIButton
+                    broadcastBtn.sendActions(for: .allTouchEvents)
+                    break;
+                    
+                }
             }
-        }
+        } else {
+            // Fallback on earlier versions
+        };
+        
     }
     
     func setUserFullScreenCanvas(user:ZoomVideoSDKUser, type:ZoomVideoSDKVideoType){
@@ -290,7 +324,11 @@ private extension ConsulationMeetingVC{
         
         self.zoomView.user = user
         self.zoomView.dataType = type;
-        SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: type);
+        if #available(iOS 15.0, *) {
+            SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: type)
+        } else {
+            // Fallback on earlier versions
+        };
     }
     
     func askForLeaveSession(user:ZoomVideoSDKUser){
@@ -354,7 +392,11 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
         DispatchQueue.global(qos: .userInitiated).async {
             CallKitManager.shared().startCall(sessionName: ZoomVideoSDK.shareInstance()?.getSession()?.getName()) {
                 DispatchQueue.main.async {
-                    SDKPiPHelper.shared().presetPiPWithSrcView(sourceView: self.containerZoomView);
+                    if #available(iOS 15.0, *) {
+                        SDKPiPHelper.shared().presetPiPWithSrcView(sourceView: self.containerZoomView)
+                    } else {
+                        // Fallback on earlier versions
+                    };
                 }
                 
             }
@@ -362,7 +404,11 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
     }
     
     func onSessionLeave(_ reason: ZoomVideoSDKSessionLeaveReason) {
-        SDKPiPHelper.shared().cleanUpPictureInPicture();
+        if #available(iOS 15.0, *) {
+            SDKPiPHelper.shared().cleanUpPictureInPicture()
+        } else {
+            // Fallback on earlier versions
+        };
         CallKitManager.shared().endCall();
         self.onLeave();
     }
@@ -430,10 +476,18 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
         if let meUser = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf(){
             if(user?.getID() == meUser.getID()){
                 if (status == ZoomVideoSDKReceiveSharingStatus.start || status == ZoomVideoSDKReceiveSharingStatus.resume){
-                    self.btnShareScreen.setImage(UIImage(systemName: "shareplay"), for: .normal)
+                    if #available(iOS 13.0, *) {
+                        self.btnShareScreen.setImage(UIImage(systemName: "shareplay"), for: .normal)
+                    } else {
+                        // Fallback on earlier versions
+                    }
                 }
                 else if(status == ZoomVideoSDKReceiveSharingStatus.stop || status == ZoomVideoSDKReceiveSharingStatus.pause){
-                    self.btnShareScreen.setImage(UIImage(systemName: "shareplay.slash"), for: .normal)
+                    if #available(iOS 13.0, *) {
+                        self.btnShareScreen.setImage(UIImage(systemName: "shareplay.slash"), for: .normal)
+                    } else {
+                        // Fallback on earlier versions
+                    }
                 }
                 return
             }

@@ -9,6 +9,7 @@ import UIKit
 import AVKit
 import ZoomVideoSDK
 
+@available(iOS 15.0, *)
 class SDKPiPHelper: NSObject,AVPictureInPictureControllerDelegate {
     
     var pipController:AVPictureInPictureController!
@@ -38,8 +39,8 @@ class SDKPiPHelper: NSObject,AVPictureInPictureControllerDelegate {
     
     override init() {
         super.init();
-        NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.didBecomeActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToBackground), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
         
     }
     
