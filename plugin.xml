@@ -96,8 +96,6 @@
 
         <dependency id="cordova-plugin-add-swift-support" version="2.0.2"/>
         
-        <preference name="SwiftVersion" value="5" />
-        <variable name="SwiftVersion" value="5" />
 
         <preference name="CAMERA_USAGE_DESCRIPTION" default="Required to allow video call functionality" />
         <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
@@ -122,6 +120,7 @@
         <config-file target="config.xml" parent="/*">
             <feature name="ZoomVideo">
                 <param name="ios-package" value="ZoomVideo"/>
+                <preference name="SwiftVersion" value="5" />
             </feature>
         </config-file>
 
