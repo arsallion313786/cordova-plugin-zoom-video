@@ -73,6 +73,9 @@
     </platform> 
 
     <platform name="ios">
+        <preference name="UseLegacySwiftLanguageVersion" value="true" />
+        <preference name="UseSwiftLanguageVersion" value="5" />
+        <preference name="SwiftVersion" value="5" />
         <source-file src="src/ios/ZoomVideo.swift"/>
         <source-file src="src/ios/VideoViewController.swift"/>
         <source-file src="src/ios/AppConstants.swift"/>
