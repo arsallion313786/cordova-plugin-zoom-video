@@ -40,7 +40,7 @@ extension ChatTableHandler{
         self.tblView.dataSource = self;
         
         self.tblView.estimatedRowHeight = 44;
-        self.tblView.rowHeight = UITableViewAutomaticDimension;
+        self.tblView.rowHeight = UITableView.automaticDimension;
     }
 }
 
