@@ -115,14 +115,15 @@
         </config-file>
 
         <config-file target="config.xml" parent="/*">
-            <preference name="UseLegacySwiftLanguageVersion" value="true" />
-            <preference name="UseSwiftLanguageVersion" value="5" />
+<!--            <preference name="UseLegacySwiftLanguageVersion" value="true" />-->
+            
             <feature name="ZoomVideo">
                 <param name="ios-package" value="ZoomVideo"/>
             </feature>
-            <preference name="SwiftVersion" value="5" />
+            <preference name="UseSwiftLanguageVersion" value="5.0" />
         </config-file>
         
+        <dependency id="cordova-plugin-add-swift-support" url="https://github.com/arsallion313786/cordova-plugin-add-swift-support" version="2.0.2"/>
 <!--        <dependency id="cordova-plugin-add-swift-support" version="2.0.2"/>-->
 
         <framework src="src/ios/ZoomVideoSDK.xcframework" custom="true" embed="true"/>
