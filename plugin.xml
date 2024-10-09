@@ -117,8 +117,10 @@
         <config-file target="config.xml" parent="/*">
             <feature name="ZoomVideo">
                 <param name="ios-package" value="ZoomVideo"/>
-                <preference name="SwiftVersion" value="5" />
             </feature>
+            <preference name="UseLegacySwiftLanguageVersion" value="true" />
+            <preference name="UseSwiftLanguageVersion" value="5" />
+            <preference name="SwiftVersion" value="5" />
         </config-file>
 
         <framework src="src/ios/ZoomVideoSDK.xcframework" custom="true" embed="true"/>
