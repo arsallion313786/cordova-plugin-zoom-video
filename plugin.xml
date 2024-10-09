@@ -81,9 +81,6 @@
         <source-file src="src/ios/BupaBaseVC.swift"/>
         <source-file src="src/ios/CallKitManager.swift"/>
         <source-file src="src/ios/ChatTableHandler.swift"/>
-        <source-file src="src/ios/ConsulationMeetingVC.swift"/>
-        <source-file src="src/ios/SDKPiPHelper.swift"/>
-        <source-file src="src/ios/SDKPiPWindowView.swift"/>
         <source-file src="src/ios/UIView+Extenstion.swift"/>
         <source-file src="src/ios/ZoomChannelConstants.swift"/>
         <source-file src="src/ios/ZoomChatVC.swift"/>
