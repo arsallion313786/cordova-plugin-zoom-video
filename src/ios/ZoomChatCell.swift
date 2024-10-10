@@ -9,6 +9,8 @@ import UIKit
 
 class ZoomChatCell: UITableViewCell {
     @IBOutlet weak var lblChatContent:UILabel!
+    @IBOutlet weak var lblUsername:UILabel!
+    @IBOutlet weak var lblTime:UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

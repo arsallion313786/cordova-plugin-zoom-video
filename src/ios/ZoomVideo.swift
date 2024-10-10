@@ -24,7 +24,7 @@ import ZoomVideoSDK
        
        if(isSDKInitilise){
            if joinZoomSession(jwt: JWTToken, sessionName: sessionName, userName: userName){
-               openVideoCall();
+               openVideoCall(shareExtensionBundleId: shareExtensionBundleId);
            }
        }
     }
@@ -79,11 +79,14 @@ import ZoomVideoSDK
     }
     
     
-    func openVideoCall(){
+    func openVideoCall(shareExtensionBundleId:String){
         let pasteboard = UIPasteboard.general
         pasteboard.string = emptyMessage
-        let storyboard = UIStoryboard(name: "VideoCall", bundle: nil)
-        let secondViewController = storyboard.instantiateViewController(withIdentifier: "ViewController") as! VideoViewController
+        let storyboard = UIStoryboard(name: "Consultation", bundle: nil)
+        let secondViewController = storyboard.instantiateViewController(withIdentifier: "ConsulationMeetingVC") as! ConsulationMeetingVC
+        if(shareExtensionBundleId.isEmpty == false){
+            secondViewController.sharedExrensionAppBundleId = shareExtensionBundleId
+        }
         secondViewController.modalPresentationStyle = .fullScreen
         self.viewController.present(secondViewController, animated: true, completion: nil)
     }

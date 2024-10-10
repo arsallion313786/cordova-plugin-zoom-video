@@ -39,7 +39,7 @@ extension ChatTableHandler{
     func confireTableView(){
         self.tblView.dataSource = self;
         
-        self.tblView.estimatedRowHeight = 44;
+        self.tblView.estimatedRowHeight = 92;
         self.tblView.rowHeight = UITableView.automaticDimension;
     }
 }
@@ -53,8 +53,9 @@ extension ChatTableHandler:UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell  = tableView.dequeueReusableCell(withIdentifier: "ZoomChatCell") as? ZoomChatCell else {fatalError("ZoomChatCell not registered")}
         let msg = self.messages[indexPath.row];
-        
-        cell.lblChatContent.text = "\(msg.senderUser?.getName() ?? "unknown"): \(msg.content ?? "N/A")"
+        cell.lblUsername.text = msg.senderUser?.getName() ?? "unknown";
+        cell.lblChatContent.text = msg.content ?? "N/A";
+        cell.lblTime.text = Date(timeIntervalSince1970: TimeInterval(msg.timeStamp)).formatted(.dateTime);
         return cell;
         
     }

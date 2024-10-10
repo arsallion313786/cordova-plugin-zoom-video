@@ -2,41 +2,74 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="ZoomChatCell" customModule="NativeBupaZoomApp" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="92" id="KGk-i7-Jjw" customClass="ZoomChatCell" customModule="Runner" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="92"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="92"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhC-Qj-jAP">
-                        <rect key="frame" x="16" y="12" width="288" height="21"/>
-                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhC-Qj-jAP">
+                        <rect key="frame" x="16" y="11.999999999999998" width="288" height="18.333333333333329"/>
+                        <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="15"/>
+                        <color key="textColor" name="primaryTitleColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpc-t2-4Cr">
+                        <rect key="frame" x="16" y="38.333333333333336" width="289" height="17.333333333333336"/>
+                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                        <color key="textColor" name="primaryTitleColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hrS-yK-ql0">
+                        <rect key="frame" x="271.66666666666669" y="65.666666666666671" width="33.333333333333314" height="15"/>
+                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                        <color key="textColor" name="primaryTitleColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="hhC-Qj-jAP" secondAttribute="trailing" constant="16" id="8mc-Hd-Nog"/>
-                    <constraint firstAttribute="bottom" secondItem="hhC-Qj-jAP" secondAttribute="bottom" constant="11" id="Eae-ts-fmr"/>
+                    <constraint firstAttribute="bottom" secondItem="hrS-yK-ql0" secondAttribute="bottom" constant="11.33" id="Gi3-jo-SKx"/>
                     <constraint firstItem="hhC-Qj-jAP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Trl-9C-F9x"/>
+                    <constraint firstItem="cpc-t2-4Cr" firstAttribute="top" secondItem="hhC-Qj-jAP" secondAttribute="bottom" constant="8" symbolic="YES" id="cCY-ae-o2Y"/>
+                    <constraint firstAttribute="trailing" secondItem="hrS-yK-ql0" secondAttribute="trailing" constant="15" id="dIO-Ai-FoR"/>
+                    <constraint firstAttribute="trailing" secondItem="cpc-t2-4Cr" secondAttribute="trailing" constant="15" id="fZP-Ia-Exz"/>
+                    <constraint firstItem="hrS-yK-ql0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="fav-BY-NM7"/>
+                    <constraint firstItem="cpc-t2-4Cr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="hHP-LA-tZY"/>
+                    <constraint firstItem="hrS-yK-ql0" firstAttribute="top" secondItem="cpc-t2-4Cr" secondAttribute="bottom" constant="10" id="u3I-nm-9Qm"/>
                     <constraint firstItem="hhC-Qj-jAP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="x7J-Xi-zjQ"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
-                <outlet property="lblChatContent" destination="hhC-Qj-jAP" id="x8r-Uh-9x0"/>
+                <outlet property="lblChatContent" destination="cpc-t2-4Cr" id="HEH-mo-PXN"/>
+                <outlet property="lblTime" destination="hrS-yK-ql0" id="dDA-dD-JHM"/>
+                <outlet property="lblUsername" destination="hhC-Qj-jAP" id="z0u-yh-kjJ"/>
             </connections>
-            <point key="canvasLocation" x="-44" y="20"/>
+            <point key="canvasLocation" x="-44.274809160305338" y="36.619718309859159"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <namedColor name="primaryTitleColor">
+            <color red="0.050999999046325684" green="0.093999996781349182" blue="0.27500000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

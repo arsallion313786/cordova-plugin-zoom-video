@@ -32,15 +32,10 @@ class CallKitManager: NSObject, CXProviderDelegate  {
     override init() {
         super.init()
         
-        if #available(iOS 14.0, *) {
-            let providerConfig:CXProviderConfiguration = CXProviderConfiguration()
-            self.provider = CXProvider(configuration: providerConfig);
-            self.provider.setDelegate(self, queue: nil);
-            self.callController = CXCallController();
-        } else {
-            // Fallback on earlier versions
-        };
-      
+        let providerConfig:CXProviderConfiguration = CXProviderConfiguration();
+        self.provider = CXProvider(configuration: providerConfig);
+        self.provider.setDelegate(self, queue: nil);
+        self.callController = CXCallController();
         
     }
     

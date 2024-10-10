@@ -82,10 +82,12 @@
         <source-file src="src/ios/CallKitManager.swift"/>
         <source-file src="src/ios/ChatTableHandler.swift"/>
         <source-file src="src/ios/UIView+Extenstion.swift"/>
-        <source-file src="src/ios/ZoomChannelConstants.swift"/>
         <source-file src="src/ios/ZoomChatVC.swift"/>
         <source-file src="src/ios/ZoomView.swift"/>
         <source-file src="src/ios/ZoomChatCell.swift"/>
+        <source-file src="src/ios/ConsulationMeetingVC.swift" />
+        <source-file src="src/ios/SDKPiPHelper.swift" />
+        <source-file src="src/ios/SDKPiPWindowView.swift" />
 
         <config-file parent="ENABLE_BITCODE" target="build.xcconfig">
             <false/>
@@ -108,6 +110,11 @@
         <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
             <string>$PHOTOLIB_USAGE_DESCRIPTION</string>
         </config-file>
+        
+        <config-file target="*-Info.plist" parent="UIUserInterfaceStyle">
+            <string>Light</string>
+        </config-file>
+        
 
         <preference name="BLUETOOTH_USAGE_DESCRIPTION" default="Required to allow video call functionality" />
         <config-file target="*-Info.plist" parent="NSBluetoothPeripheralUsageDescription">
@@ -122,6 +129,39 @@
             </feature>
             <preference name="UseSwiftLanguageVersion" value="5.0" />
         </config-file>
+        
+        <config-file target="*-Info.plist" parent="UIBackgroundModes">
+                   <array>
+                       <string>audio</string>
+                       <string>voip</string>
+                   </array>
+               </config-file>
+        
+        <config-file target="*-Info.plist" parent="UIAppFonts">
+                    <array>
+                        <string>Montserrat-Black.ttf</string>
+                        <string>Montserrat-BlackItalic.ttf</string>
+                        <string>Montserrat-Bold.ttf</string>
+                        <string>Montserrat-BoldItalic.ttf</string>
+                        <string>Montserrat-ExtraBold.ttf</string>
+                        <string>Montserrat-ExtraBoldItalic.ttf</string>
+                        <string>Montserrat-ExtraLight.ttf</string>
+                        <string>Montserrat-ExtraLightItalic.ttf</string>
+                        <string>Montserrat-Italic.ttf</string>
+                        <string>Montserrat-Light.ttf</string>
+                        <string>Montserrat-LightItalic.ttf</string>
+                        <string>Montserrat-Medium.ttf</string>
+                        <string>Montserrat-MediumItalic.ttf</string>
+                        <string>Montserrat-Regular.ttf</string>
+                        <string>Montserrat-SemiBold.ttf</string>
+                        <string>Montserrat-SemiBoldItalic.ttf</string>
+                        <string>Montserrat-Thin.ttf</string>
+                        <string>Montserrat-ThinItalic.ttf</string>
+                    </array>
+               </config-file>
+        
+        
+        
         
         <dependency id="cordova-plugin-add-swift-support" url="https://github.com/arsallion313786/cordova-plugin-add-swift-support" version="2.0.2"/>
 <!--        <dependency id="cordova-plugin-add-swift-support" version="2.0.2"/>-->
@@ -144,5 +184,46 @@
         <resource-file src="src/ios/Resources/no-video-ios-white-33px.png" target="Resources/no-video-ios-white-33px.png" />
         <resource-file src="src/ios/Resources/no-mic-ios-white-33px.png" target="Resources/no-mic-ios-white-33px.png" />
         <resource-file src="src/ios/Resources/switch-camera-ios-white-33px.png" target="Resources/switch-camera-ios-white-33px.png" />
+        
+        <resource-file src="src/ios/Resources/call_drop_icon.png" target="Resources/call_drop_icon.png" />
+        <resource-file src="src/ios/Resources/call_drop_icon@2x.png" target="Resources/call_drop_icon@2x.png" />
+        <resource-file src="src/ios/Resources/call_drop_icon@3x.png" target="Resources/call_drop_icon@3x.png" />
+        <resource-file src="src/ios/Resources/call_timer_green_icon.png" target="Resources/call_timer_green_icon.png" />
+        <resource-file src="src/ios/Resources/call_timer_green_icon@2x.png" target="Resources/call_timer_green_icon@2x.png" />
+        <resource-file src="src/ios/Resources/call_timer_green_icon@3x.png" target="Resources/call_timer_green_icon@3x.png" />
+        <resource-file src="src/ios/Resources/chat_icon.png" target="Resources/chat_icon.png" />
+        <resource-file src="src/ios/Resources/chat_icon@2x.png" target="Resources/chat_icon@2x.png" />
+        <resource-file src="src/ios/Resources/chat_icon@3x.png" target="Resources/chat_icon@3x.png" />
+        <resource-file src="src/ios/Resources/default_avatar.png" target="Resources/default_avatar.png" />
+        <resource-file src="src/ios/Resources/mic_enable_icon.png" target="Resources/mic_enable_icon.png" />
+        <resource-file src="src/ios/Resources/mic_enable_icon@2x.png" target="Resources/mic_enable_icon@2x.png" />
+        <resource-file src="src/ios/Resources/mic_enable_icon@3x.png" target="Resources/mic_enable_icon@3x.png" />
+        <resource-file src="src/ios/Resources/video_enable_icon.png" target="Resources/video_enable_icon.png" />
+        <resource-file src="src/ios/Resources/video_enable_icon@2x.png" target="Resources/video_enable_icon@2x.png" />
+        <resource-file src="src/ios/Resources/video_enable_icon@3x.png" target="Resources/video_enable_icon@3x.png" />
+        
+        <resource-file src="src/ios/Resources/Montserrat-Black.ttf" target="Resources/Montserrat-Black.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-BlackItalic.ttf" target="Resources/Montserrat-BlackItalic.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-Bold.ttf" target="Resources/Montserrat-Bold.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-BoldItalic.ttf" target="Resources/Montserrat-BoldItalic.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-ExtraBold.ttf" target="Resources/Montserrat-ExtraBold.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-ExtraBoldItalic.ttf" target="Resources/Montserrat-ExtraBoldItalic.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-ExtraLight.ttf" target="Resources/Montserrat-ExtraLight.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-ExtraLightItalic.ttf" target="Resources/Montserrat-ExtraLightItalic.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-Italic.ttf" target="Resources/Montserrat-Italic.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-Light.ttf" target="Resources/Montserrat-Light.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-LightItalic.ttf" target="Resources/Montserrat-LightItalic.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-Medium.ttf" target="Resources/Montserrat-Medium.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-MediumItalic.ttf" target="Resources/Montserrat-MediumItalic.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-Regular.ttf" target="Resources/Montserrat-Regular.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-SemiBold.ttf" target="Resources/Montserrat-SemiBold.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-SemiBoldItalic.ttf" target="Resources/Montserrat-SemiBoldItalic.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-Thin.ttf" target="Resources/Montserrat-Thin.ttf" />
+        <resource-file src="src/ios/Resources/Montserrat-ThinItalic.ttf" target="Resources/Montserrat-ThinItalic.ttf" />
+        
+        
+        
+        
+        
     </platform>
 </plugin>
