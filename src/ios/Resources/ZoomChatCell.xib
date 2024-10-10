@@ -35,6 +35,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="hhC-Qj-jAP" secondAttribute="trailing" constant="16" id="8mc-Hd-Nog"/>
                     <constraint firstAttribute="bottom" secondItem="hrS-yK-ql0" secondAttribute="bottom" constant="11.33" id="Gi3-jo-SKx"/>
@@ -49,6 +50,7 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="lblChatContent" destination="cpc-t2-4Cr" id="HEH-mo-PXN"/>
                 <outlet property="lblTime" destination="hrS-yK-ql0" id="dDA-dD-JHM"/>

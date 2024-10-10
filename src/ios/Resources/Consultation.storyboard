@@ -5,7 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -253,7 +252,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Pde-ER-Nk0">
                                 <rect key="frame" x="0.0" y="50" width="375" height="680"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter message here...." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vEg-xF-8BO">
                                 <rect key="frame" x="20" y="744" width="290" height="34"/>
@@ -277,7 +276,7 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Xw6-Ao-3AZ"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Pde-ER-Nk0" firstAttribute="leading" secondItem="Xw6-Ao-3AZ" secondAttribute="leading" id="1G5-9V-CD1"/>
                             <constraint firstItem="vEg-xF-8BO" firstAttribute="bottom" secondItem="Xw6-Ao-3AZ" secondAttribute="bottom" id="Gyv-IS-TS6"/>
@@ -309,8 +308,5 @@
         <image name="mic_enable_icon.png" width="128" height="128"/>
         <image name="paperplane.fill" catalog="system" width="128" height="119"/>
         <image name="video_enable_icon.png" width="128" height="128"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
