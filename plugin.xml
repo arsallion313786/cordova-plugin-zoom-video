@@ -39,7 +39,8 @@
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <activity 
                 android:name="cordova.plugin.zoomvideo.SessionActivity"
-                android:configChanges="orientation|screenSize" 
+                android:supportsPictureInPicture="true"
+                android:configChanges="orientation|screenSize"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             </activity>
         </config-file>
