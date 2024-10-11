@@ -120,25 +120,21 @@ private extension ConsulationMeetingVC{
             self.btnVideoIcon.isSelected = false;
             ZoomVideoSDK.shareInstance()?.getVideoHelper()?.stopVideo();
             self.meUserPlaceHolderIcon.isHidden = false;
-           // self.btnVideoIcon.setImage(UIImage(systemName: "video.slash"), for: .normal)
+            self.btnVideoIcon.setImage(UIImage(systemName: "video.slash"), for: .normal)
         }
         else{
             self.btnVideoIcon.isSelected = true;
             ZoomVideoSDK.shareInstance()?.getVideoHelper()?.startVideo();
             self.meUserPlaceHolderIcon.isHidden = true;
-            //self.btnVideoIcon.setImage(UIImage(named: "video_enable_icon"), for: .normal)
+            self.btnVideoIcon.setImage(UIImage(named: "video_enable_icon"), for: .normal)
         }
     }
     
     @IBAction func btnChatPressed(_ sender:UIButton){
         self.chatVc = nil;
-        if #available(iOS 13.0, *) {
-            self.chatVc =  self.storyboard?.instantiateViewController(identifier: "ZoomChatVC", creator: { coder in
-                ZoomChatVC(arrChatMessages: self.arrChatMessages, coder: coder);
-            })
-        } else {
-            // Fallback on earlier versions
-        }
+        self.chatVc =  self.storyboard?.instantiateViewController(identifier: "ZoomChatVC", creator: { coder in
+            ZoomChatVC(arrChatMessages: self.arrChatMessages, coder: coder);
+        })
         
         if let vc =  self.chatVc{
             self.present(vc, animated: true)
@@ -165,11 +161,9 @@ private extension ConsulationMeetingVC{
         self.setUI();
         self.setData();
         if let user = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf(){
-            if #available(iOS 15.0, *) {
-                SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
-            } else {
-                // Fallback on earlier versions
-            }
+            
+            SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
+            
         }
     }
     
@@ -197,29 +191,29 @@ private extension ConsulationMeetingVC{
     }
     
     func setDesignationName(user:ZoomVideoSDKUser){
-            if user.isHost(){
-                self.lblCurrentUserDesignation.text = "General Practitioner"
-            }
-            else{
-                self.lblCurrentUserDesignation.text = "Patient/Attendee"
-            }
+        if user.isHost(){
+            self.lblCurrentUserDesignation.text = "General Practitioner"
+        }
+        else{
+            self.lblCurrentUserDesignation.text = "Patient/Attendee"
+        }
         
     }
     
     
     
     
-//    func makeHalfCircleIntoBottomActionView(){
-//        let circlePath = UIBezierPath(arcCenter: CGPoint(x: bottomActionView.bounds.size.width / 2, y: 0), radius: 50, startAngle: 0.0, endAngle: -.pi, clockwise: true)
-//        
-//        circlePath.append(UIBezierPath(rect: bottomActionView.bounds));
-//        circlePath.close();
-//        
-//        let circleShape = CAShapeLayer()
-//        circleShape.path = circlePath.cgPath
-//        circleShape.fillRule = .evenOdd
-//        bottomActionView.layer.mask = circleShape;
-//    }
+    //    func makeHalfCircleIntoBottomActionView(){
+    //        let circlePath = UIBezierPath(arcCenter: CGPoint(x: bottomActionView.bounds.size.width / 2, y: 0), radius: 50, startAngle: 0.0, endAngle: -.pi, clockwise: true)
+    //
+    //        circlePath.append(UIBezierPath(rect: bottomActionView.bounds));
+    //        circlePath.close();
+    //
+    //        let circleShape = CAShapeLayer()
+    //        circleShape.path = circlePath.cgPath
+    //        circleShape.fillRule = .evenOdd
+    //        bottomActionView.layer.mask = circleShape;
+    //    }
     
     func onLeave(){
         self.timer?.invalidate();
@@ -233,14 +227,14 @@ private extension ConsulationMeetingVC{
         let user = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf();
         if(user?.audioStatus()?.audioType != ZoomVideoSDKAudioType.none){
             if(user?.audioStatus()?.isMuted ?? true){
-                //self.btnAudioIcon.setImage(UIImage(systemName: "mic.slash"), for: .normal);
+                self.btnAudioIcon.setImage(UIImage(systemName: "mic.slash"), for: .normal);
             }
             else{
                 self.btnAudioIcon.setImage(UIImage(named: "mic_enable_icon"), for: .normal);
             }
         }
         else{
-            //self.btnAudioIcon.setImage(UIImage(systemName: "mic.slash"), for: .normal);
+            self.btnAudioIcon.setImage(UIImage(systemName: "mic.slash"), for: .normal);
         }
         
     }
@@ -291,16 +285,14 @@ private extension ConsulationMeetingVC{
         }
         else {
             
-            if #available(iOS 12.0, *) {
-                let broadcastView = RPSystemBroadcastPickerView()
-                broadcastView.preferredExtension = self.sharedExrensionAppBundleId;
-                broadcastView.tag = 1000000;
-                self.view.addSubview(broadcastView)
-                self.sendTouchDownEventToBroadcastButton()
-            } else {
-                // Fallback on earlier versions
-            };
-         
+            
+            let broadcastView = RPSystemBroadcastPickerView()
+            broadcastView.preferredExtension = self.sharedExrensionAppBundleId;
+            broadcastView.tag = 1000000;
+            self.view.addSubview(broadcastView)
+            self.sendTouchDownEventToBroadcastButton()
+            
+            
         }
         
         //if (ZoomVideoSDK.shareInstance()?.getShareHelper()?.isScreenSharingOut()  ?? false)  == false
@@ -308,21 +300,19 @@ private extension ConsulationMeetingVC{
     }
     
     func sendTouchDownEventToBroadcastButton(){
-        if #available(iOS 12.0, *) {
-            let broadcastView:RPSystemBroadcastPickerView?  = self.view.viewWithTag(1000000) as? RPSystemBroadcastPickerView
-            guard let broadcastView else { return;}
-            
-            for subView in broadcastView.subviews{
-                if subView.isKind(of: UIButton.self){
-                    let broadcastBtn = subView as! UIButton
-                    broadcastBtn.sendActions(for: .allTouchEvents)
-                    break;
-                    
-                }
+        
+        let broadcastView:RPSystemBroadcastPickerView?  = self.view.viewWithTag(1000000) as? RPSystemBroadcastPickerView
+        guard let broadcastView else { return;}
+        
+        for subView in broadcastView.subviews{
+            if subView.isKind(of: UIButton.self){
+                let broadcastBtn = subView as! UIButton
+                broadcastBtn.sendActions(for: .allTouchEvents)
+                break;
+                
             }
-        } else {
-            // Fallback on earlier versions
-        };
+        }
+        
         
     }
     
@@ -337,11 +327,9 @@ private extension ConsulationMeetingVC{
         self.zoomView.user = user
         self.zoomView.dataType = type;
         
-        if #available(iOS 15.0, *) {
-            SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: type)
-        } else {
-            // Fallback on earlier versions
-        };
+        
+        SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: type)
+        
     }
     
     func unsubscribeView(user:ZoomVideoSDKUser?, view:ZoomView){
@@ -384,26 +372,22 @@ private extension ConsulationMeetingVC{
     func updateViewIfUserStopVideo(user:ZoomVideoSDKUser, canvas:ZoomView){
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if(user.getShareCanvas()?.videoStatus()?.on == false && canvas.dataType != ZoomVideoSDKVideoType.shareData){
-//                canvas.backgroundColor = UIColor.black;
-//                self.unsubscribeView(user: user, view: canvas);
+                //                canvas.backgroundColor = UIColor.black;
+                //                self.unsubscribeView(user: user, view: canvas);
                 self.otherUserPlaceHolderIcon.isHidden = false;
                 
                 if let user = self.thumbnailView.user {
-                    if #available(iOS 15.0, *) {
-                        SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
-                    } else {
-                        // Fallback on earlier versions
-                    }
+                    
+                    SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
+                    
                 }
                 
             }
             else{
                 if let user = self.zoomView.user {
-                    if #available(iOS 15.0, *) {
-                        SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
-                    } else {
-                        // Fallback on earlier versions
-                    }
+                    
+                    SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
+                    
                 }
                 self.otherUserPlaceHolderIcon.isHidden = true;
             }
@@ -445,11 +429,9 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
         DispatchQueue.global(qos: .userInitiated).async {
             CallKitManager.shared().startCall(sessionName: ZoomVideoSDK.shareInstance()?.getSession()?.getName()) {
                 DispatchQueue.main.async {
-                    if #available(iOS 15.0, *) {
-                        SDKPiPHelper.shared().presetPiPWithSrcView(sourceView: self.containerZoomView)
-                    } else {
-                        // Fallback on earlier versions
-                    };
+                    
+                    SDKPiPHelper.shared().presetPiPWithSrcView(sourceView: self.containerZoomView)
+                    
                 }
                 
             }
@@ -457,11 +439,9 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
     }
     
     func onSessionLeave(_ reason: ZoomVideoSDKSessionLeaveReason) {
-        if #available(iOS 15.0, *) {
-            SDKPiPHelper.shared().cleanUpPictureInPicture()
-        } else {
-            // Fallback on earlier versions
-        };
+        
+        SDKPiPHelper.shared().cleanUpPictureInPicture()
+        
         CallKitManager.shared().endCall();
         self.onLeave();
     }
@@ -479,11 +459,9 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
             self.setDesignationName(user: user);
             self.lblWaitingMsg.isHidden = true;
             self.setUserFullScreenCanvas(user: user, type: .videoData);
-            if #available(iOS 15.0, *) {
-                SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
-            } else {
-                // Fallback on earlier versions
-            }
+            
+            SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
+            
             if let name =  user.getName(){
                 self.lblCurrentUserName.text = name;
                 showSnackbar(message: "\(name) Joined");
@@ -527,18 +505,18 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
     }
     
     func onUserVideoStatusChanged(_ helper: ZoomVideoSDKVideoHelper?, user userArray: [ZoomVideoSDKUser]?) {
-//            if let meUser = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf(){
-//                if(meUser.getID() == userArray?.first?.getID()){
-//                    return;
-//                    //self.updateViewIfUserStopVideo(user: meUser, canvas: self.thumbnailView);
-//                }
-//            }
-            
-            if let user = userArray?.first as? ZoomVideoSDKUser{
-                if(user.getID() == self.zoomView.user?.getID()){
-                    self.updateViewIfUserStopVideo(user: user, canvas: self.zoomView)
-                }
+        //            if let meUser = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf(){
+        //                if(meUser.getID() == userArray?.first?.getID()){
+        //                    return;
+        //                    //self.updateViewIfUserStopVideo(user: meUser, canvas: self.thumbnailView);
+        //                }
+        //            }
+        
+        if let user = userArray?.first as? ZoomVideoSDKUser{
+            if(user.getID() == self.zoomView.user?.getID()){
+                self.updateViewIfUserStopVideo(user: user, canvas: self.zoomView)
             }
+        }
         
         
     }

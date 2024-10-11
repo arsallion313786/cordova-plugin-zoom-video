@@ -12,9 +12,12 @@ import ZoomVideoSDK
         let userName = command.arguments[2] as? String ?? ""
         let domain = command.arguments[3] as? String ?? "zoom.us"
         let enableLog = command.arguments[4] as? Bool ?? false
-        let groupId = command.arguments[5] as? String ?? ""//groupId
-        let shareExtensionBundleId = command.arguments[6] as? String ?? ""//groupId
-        emptyMessage = command.arguments[7] as? String ?? "Waiting for someone to join the call..."
+       emptyMessage = command.arguments[5] as? String ?? "Waiting for someone to join the call..."
+       let groupId = "";
+       //command.arguments[5] as? String ?? ""//groupId
+       let shareExtensionBundleId = "";
+       //command.arguments[6] as? String ?? ""//groupId
+        
 
        if(isSDKInitilise == false){
            if initializeZoomSDK(domain: domain, enableLog: enableLog, appGroupId: groupId){
