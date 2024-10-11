@@ -55,7 +55,7 @@ class SDKPiPHelper: NSObject,AVPictureInPictureControllerDelegate {
     }
     
     class func isPiPSupported() -> Bool{
-        let isInCall = CallKitManager.shared().isInCall();
+        var isInCall = CallKitManager.shared().isInCall();
         return AVPictureInPictureController.isPictureInPictureSupported() && isInCall;
     }
     

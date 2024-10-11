@@ -7,7 +7,7 @@ import ZoomVideoSDK
    @objc(openSession:)
    func openSession(command: CDVInvokedUrlCommand) {
         
-        let JWTToken = command.arguments[0] as? String ?? ""
+       let JWTToken = command.arguments[0] as? String ?? ""
         let sessionName = command.arguments[1] as? String ?? ""
         let userName = command.arguments[2] as? String ?? ""
         let domain = command.arguments[3] as? String ?? "zoom.us"

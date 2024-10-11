@@ -112,7 +112,7 @@ private extension ConsulationMeetingVC{
             print("audioSession error: \(error.localizedDescription)")
         }
         
-        //self.btnSpeakerIcon.setImage(UIImage(systemName:isSpeakerOn ? "speaker" :  "speaker.slash"), for: .normal)
+        self.btnSpeakerIcon.setImage(UIImage(systemName:isSpeakerOn ? "speaker" :  "speaker.slash"), for: .normal)
     }
     
     @IBAction func btnToggleVideoPressed(_ sender:UIButton){
@@ -161,9 +161,7 @@ private extension ConsulationMeetingVC{
         self.setUI();
         self.setData();
         if let user = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf(){
-            
             SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
-            
         }
     }
     
@@ -184,40 +182,41 @@ private extension ConsulationMeetingVC{
         self.thumbnailView.user = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf();
         if(self.thumbnailView.user != nil){
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.thumbnailView.user!.getVideoCanvas()?.subscribe(with: self.thumbnailView, aspectMode: ZoomVideoSDKVideoAspect.full_Filled, andResolution: ZoomVideoSDKVideoResolution._Auto);
+                self.thumbnailView.user!.getVideoCanvas()?.subscribe(with: self.thumbnailView, aspectMode: ZoomVideoSDKVideoAspect.letterBox, andResolution: ZoomVideoSDKVideoResolution._Auto);
             }
-            
+           
         }
     }
     
     func setDesignationName(user:ZoomVideoSDKUser){
-        if user.isHost(){
-            self.lblCurrentUserDesignation.text = "General Practitioner"
-        }
-        else{
-            self.lblCurrentUserDesignation.text = "Patient/Attendee"
-        }
+            if user.isHost(){
+                self.lblCurrentUserDesignation.text = "General Practitioner"
+            }
+            else{
+                self.lblCurrentUserDesignation.text = "Patient/Attendee"
+            }
         
     }
     
     
     
     
-    //    func makeHalfCircleIntoBottomActionView(){
-    //        let circlePath = UIBezierPath(arcCenter: CGPoint(x: bottomActionView.bounds.size.width / 2, y: 0), radius: 50, startAngle: 0.0, endAngle: -.pi, clockwise: true)
-    //
-    //        circlePath.append(UIBezierPath(rect: bottomActionView.bounds));
-    //        circlePath.close();
-    //
-    //        let circleShape = CAShapeLayer()
-    //        circleShape.path = circlePath.cgPath
-    //        circleShape.fillRule = .evenOdd
-    //        bottomActionView.layer.mask = circleShape;
-    //    }
+    func makeHalfCircleIntoBottomActionView(){
+        let circlePath = UIBezierPath(arcCenter: CGPoint(x: bottomActionView.bounds.size.width / 2, y: 0), radius: 50, startAngle: 0.0, endAngle: -.pi, clockwise: true)
+        
+        circlePath.append(UIBezierPath(rect: bottomActionView.bounds));
+        circlePath.close();
+        
+        let circleShape = CAShapeLayer()
+        circleShape.path = circlePath.cgPath
+        circleShape.fillRule = .evenOdd
+        bottomActionView.layer.mask = circleShape;
+    }
     
     func onLeave(){
         self.timer?.invalidate();
         self.timer = nil;
+        let user = self.zoomView.user;
         self.unsubscribeView(user: self.zoomView.user, view: self.zoomView);
         self.unsubscribeView(user: self.thumbnailView.user, view: self.thumbnailView);
         self.dismiss(animated: true);
@@ -285,14 +284,11 @@ private extension ConsulationMeetingVC{
         }
         else {
             
-            
-            let broadcastView = RPSystemBroadcastPickerView()
+            let broadcastView = RPSystemBroadcastPickerView();
             broadcastView.preferredExtension = self.sharedExrensionAppBundleId;
             broadcastView.tag = 1000000;
             self.view.addSubview(broadcastView)
             self.sendTouchDownEventToBroadcastButton()
-            
-            
         }
         
         //if (ZoomVideoSDK.shareInstance()?.getShareHelper()?.isScreenSharingOut()  ?? false)  == false
@@ -300,8 +296,7 @@ private extension ConsulationMeetingVC{
     }
     
     func sendTouchDownEventToBroadcastButton(){
-        
-        let broadcastView:RPSystemBroadcastPickerView?  = self.view.viewWithTag(1000000) as? RPSystemBroadcastPickerView
+        let broadcastView:RPSystemBroadcastPickerView?  = self.view.viewWithTag(1000000) as? RPSystemBroadcastPickerView;
         guard let broadcastView else { return;}
         
         for subView in broadcastView.subviews{
@@ -312,8 +307,6 @@ private extension ConsulationMeetingVC{
                 
             }
         }
-        
-        
     }
     
     func setUserFullScreenCanvas(user:ZoomVideoSDKUser, type:ZoomVideoSDKVideoType){
@@ -327,9 +320,7 @@ private extension ConsulationMeetingVC{
         self.zoomView.user = user
         self.zoomView.dataType = type;
         
-        
-        SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: type)
-        
+        SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: type);
     }
     
     func unsubscribeView(user:ZoomVideoSDKUser?, view:ZoomView){
@@ -372,22 +363,18 @@ private extension ConsulationMeetingVC{
     func updateViewIfUserStopVideo(user:ZoomVideoSDKUser, canvas:ZoomView){
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if(user.getShareCanvas()?.videoStatus()?.on == false && canvas.dataType != ZoomVideoSDKVideoType.shareData){
-                //                canvas.backgroundColor = UIColor.black;
-                //                self.unsubscribeView(user: user, view: canvas);
+//                canvas.backgroundColor = UIColor.black;
+//                self.unsubscribeView(user: user, view: canvas);
                 self.otherUserPlaceHolderIcon.isHidden = false;
                 
                 if let user = self.thumbnailView.user {
-                    
                     SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
-                    
                 }
                 
             }
             else{
                 if let user = self.zoomView.user {
-                    
                     SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
-                    
                 }
                 self.otherUserPlaceHolderIcon.isHidden = true;
             }
@@ -429,9 +416,7 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
         DispatchQueue.global(qos: .userInitiated).async {
             CallKitManager.shared().startCall(sessionName: ZoomVideoSDK.shareInstance()?.getSession()?.getName()) {
                 DispatchQueue.main.async {
-                    
-                    SDKPiPHelper.shared().presetPiPWithSrcView(sourceView: self.containerZoomView)
-                    
+                    SDKPiPHelper.shared().presetPiPWithSrcView(sourceView: self.containerZoomView);
                 }
                 
             }
@@ -439,9 +424,7 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
     }
     
     func onSessionLeave(_ reason: ZoomVideoSDKSessionLeaveReason) {
-        
-        SDKPiPHelper.shared().cleanUpPictureInPicture()
-        
+        SDKPiPHelper.shared().cleanUpPictureInPicture();
         CallKitManager.shared().endCall();
         self.onLeave();
     }
@@ -459,9 +442,7 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
             self.setDesignationName(user: user);
             self.lblWaitingMsg.isHidden = true;
             self.setUserFullScreenCanvas(user: user, type: .videoData);
-            
             SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
-            
             if let name =  user.getName(){
                 self.lblCurrentUserName.text = name;
                 showSnackbar(message: "\(name) Joined");
@@ -505,18 +486,18 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
     }
     
     func onUserVideoStatusChanged(_ helper: ZoomVideoSDKVideoHelper?, user userArray: [ZoomVideoSDKUser]?) {
-        //            if let meUser = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf(){
-        //                if(meUser.getID() == userArray?.first?.getID()){
-        //                    return;
-        //                    //self.updateViewIfUserStopVideo(user: meUser, canvas: self.thumbnailView);
-        //                }
-        //            }
-        
-        if let user = userArray?.first as? ZoomVideoSDKUser{
-            if(user.getID() == self.zoomView.user?.getID()){
-                self.updateViewIfUserStopVideo(user: user, canvas: self.zoomView)
+//            if let meUser = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf(){
+//                if(meUser.getID() == userArray?.first?.getID()){
+//                    return;
+//                    //self.updateViewIfUserStopVideo(user: meUser, canvas: self.thumbnailView);
+//                }
+//            }
+            
+            if let user = userArray?.first as? ZoomVideoSDKUser{
+                if(user.getID() == self.zoomView.user?.getID()){
+                    self.updateViewIfUserStopVideo(user: user, canvas: self.zoomView)
+                }
             }
-        }
         
         
     }
@@ -539,10 +520,10 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
         if let meUser = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf(){
             if(user?.getID() == meUser.getID()){
                 if (status == ZoomVideoSDKReceiveSharingStatus.start || status == ZoomVideoSDKReceiveSharingStatus.resume){
-                    //self.btnShareScreen.setImage(UIImage(systemName: "shareplay"), for: .normal)
+                    self.btnShareScreen.setImage(UIImage(systemName: "shareplay"), for: .normal)
                 }
                 else if(status == ZoomVideoSDKReceiveSharingStatus.stop || status == ZoomVideoSDKReceiveSharingStatus.pause){
-                    //self.btnShareScreen.setImage(UIImage(systemName: "shareplay.slash"), for: .normal)
+                    self.btnShareScreen.setImage(UIImage(systemName: "shareplay.slash"), for: .normal)
                 }
                 return
             }
