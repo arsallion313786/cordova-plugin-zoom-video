@@ -11,7 +11,7 @@ import ReplayKit
 import AudioToolbox
 
 
-class ConsulationMeetingVC: UIViewController {
+class ConsulationMeetingVC: BupaBaseVC {
     
     @IBOutlet private weak var bottomActionView:UIView!
     
@@ -165,7 +165,11 @@ private extension ConsulationMeetingVC{
         self.setUI();
         self.setData();
         if let user = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf(){
-            //SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
+            if #available(iOS 15.0, *) {
+                SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
     
@@ -334,7 +338,11 @@ private extension ConsulationMeetingVC{
         self.zoomView.user = user
         self.zoomView.dataType = type;
         
-        //SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: type);
+        if #available(iOS 15.0, *) {
+            SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: type)
+        } else {
+            // Fallback on earlier versions
+        };
     }
     
     func unsubscribeView(user:ZoomVideoSDKUser?, view:ZoomView){
@@ -382,13 +390,21 @@ private extension ConsulationMeetingVC{
                 self.otherUserPlaceHolderIcon.isHidden = false;
                 
                 if let user = self.thumbnailView.user {
-                    //SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
+                    if #available(iOS 15.0, *) {
+                        SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
+                    } else {
+                        // Fallback on earlier versions
+                    }
                 }
                 
             }
             else{
                 if let user = self.zoomView.user {
-                    //SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
+                    if #available(iOS 15.0, *) {
+                        SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
+                    } else {
+                        // Fallback on earlier versions
+                    }
                 }
                 self.otherUserPlaceHolderIcon.isHidden = true;
             }
@@ -430,7 +446,11 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
         DispatchQueue.global(qos: .userInitiated).async {
             CallKitManager.shared().startCall(sessionName: ZoomVideoSDK.shareInstance()?.getSession()?.getName()) {
                 DispatchQueue.main.async {
-                    //SDKPiPHelper.shared().presetPiPWithSrcView(sourceView: self.containerZoomView);
+                    if #available(iOS 15.0, *) {
+                        SDKPiPHelper.shared().presetPiPWithSrcView(sourceView: self.containerZoomView)
+                    } else {
+                        // Fallback on earlier versions
+                    };
                 }
                 
             }
@@ -438,7 +458,11 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
     }
     
     func onSessionLeave(_ reason: ZoomVideoSDKSessionLeaveReason) {
-        //SDKPiPHelper.shared().cleanUpPictureInPicture();
+        if #available(iOS 15.0, *) {
+            SDKPiPHelper.shared().cleanUpPictureInPicture()
+        } else {
+            // Fallback on earlier versions
+        };
         CallKitManager.shared().endCall();
         self.onLeave();
     }
@@ -456,7 +480,6 @@ extension ConsulationMeetingVC:ZoomVideoSDKDelegate{
             self.setDesignationName(user: user);
             self.lblWaitingMsg.isHidden = true;
             self.setUserFullScreenCanvas(user: user, type: .videoData);
-            //SDKPiPHelper.shared().updatePiPVideoUser(user: user, videoType: .videoData)
             if let name =  user.getName(){
                 self.lblCurrentUserName.text = name;
                 showSnackbar(message: "\(name) Joined");
