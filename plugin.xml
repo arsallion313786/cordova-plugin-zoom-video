@@ -81,10 +81,8 @@
         <source-file src="src/ios/AppConstants.swift"/>
         <source-file src="src/ios/Bupa+Date.swift"/>
         <source-file src="src/ios/Bupa+View.swift"/>
-        <source-file src="src/ios/BupaBaseVC.swift"/>
         <source-file src="src/ios/CallKitManager.swift"/>
         <source-file src="src/ios/ChatTableHandler.swift"/>
-        <source-file src="src/ios/UIView+Extenstion.swift"/>
         <source-file src="src/ios/ZoomChatVC.swift"/>
         <source-file src="src/ios/ZoomView.swift"/>
         <source-file src="src/ios/ZoomChatCell.swift"/>

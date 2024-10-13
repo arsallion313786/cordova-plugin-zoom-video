@@ -11,7 +11,7 @@ import ReplayKit
 import AudioToolbox
 
 
-class ConsulationMeetingVC: BupaBaseVC {
+class ConsulationMeetingVC: UIViewController {
     
     @IBOutlet private weak var bottomActionView:UIView!
     

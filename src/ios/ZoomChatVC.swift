@@ -8,7 +8,7 @@
 import UIKit
 import ZoomVideoSDK
 
-final class ZoomChatVC: BupaBaseVC {
+final class ZoomChatVC: UIViewController {
     
     @IBOutlet private weak var tblView:UITableView!
     @IBOutlet private weak var bottomConstraint:NSLayoutConstraint!
@@ -33,16 +33,16 @@ final class ZoomChatVC: BupaBaseVC {
         self.methodsOnViewLoaded()
     }
     
-    override func keyboardWillChangeFrame(to frame: CGRect) {
-        if(frame != CGRect.zero){
-            self.bottomConstraint.constant = -(frame.height - AppConstants.safeArea.bottom);
-        }
-        else{
-            self.bottomConstraint.constant = 0;
-        }
-        self.view.layoutIfNeeded(animated: true);
-        
-    }
+//    override func keyboardWillChangeFrame(to frame: CGRect) {
+//        if(frame != CGRect.zero){
+//            self.bottomConstraint.constant = -(frame.height - AppConstants.safeArea.bottom);
+//        }
+//        else{
+//            self.bottomConstraint.constant = 0;
+//        }
+//        self.view.layoutIfNeeded(animated: true);
+//        
+//    }
     
     func reloadData(messages:[ZoomVideoSDKChatMessage]?){
         self.chatTableHandler.reloadData(messages: messages);
