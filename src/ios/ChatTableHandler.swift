@@ -40,7 +40,7 @@ extension ChatTableHandler{
         self.tblView.dataSource = self;
         
         self.tblView.estimatedRowHeight = 92;
-        self.tblView.rowHeight = UITableView.automaticDimension
+        self.tblView.rowHeight = UITableViewAutomaticDimension
     }
 }
 
@@ -55,7 +55,8 @@ extension ChatTableHandler:UITableViewDataSource{
         let msg = self.messages[indexPath.row];
         cell.lblUsername.text = msg.senderUser?.getName() ?? "unknown";
         cell.lblChatContent.text = msg.content ?? "N/A";
-        cell.lblTime.text = Date(timeIntervalSince1970: TimeInterval(msg.timeStamp)).formatted(.dateTime);
+        cell.lblTime.text =  "--";
+        //Date(timeIntervalSince1970: TimeInterval(msg.timeStamp)).formatted(.dateTime);
         return cell;
         
     }
