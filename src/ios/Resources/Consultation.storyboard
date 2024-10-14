@@ -2,16 +2,22 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Consulation MeetingVC-->
         <scene sceneID="bRi-P7-oh3">
             <objects>
-                <viewController storyboardIdentifier="ConsulationMeetingVC" id="EvF-HB-Wij" customClass="ConsulationMeetingVC" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ConsulationMeetingVC" id="EvF-HB-Wij" customClass="ConsulationMeetingVC" customModule="ZoomHelloWorldTwo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ekl-WD-sRm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -19,7 +25,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TyS-gL-FIX">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pBy-5L-w7o" customClass="ZoomView" customModule="Runner" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pBy-5L-w7o" customClass="ZoomView" customModule="ZoomHelloWorldTwo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
@@ -80,7 +86,7 @@
                                     <constraint firstItem="4nJ-dN-ZWl" firstAttribute="centerY" secondItem="zmF-AD-hbL" secondAttribute="centerY" id="fCp-Zm-Rnj"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3wE-XL-vi2" customClass="ZoomView" customModule="Runner" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3wE-XL-vi2" customClass="ZoomView" customModule="ZoomHelloWorldTwo" customModuleProvider="target">
                                 <rect key="frame" x="211" y="461" width="140" height="210"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -96,10 +102,10 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IxI-aJ-B9k">
-                                <rect key="frame" x="57.666666666666657" y="695" width="260" height="68"/>
+                                <rect key="frame" x="25.666666666666657" y="695" width="324" height="68"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="qK2-xH-wCI">
-                                        <rect key="frame" x="10" y="0.0" width="240" height="68"/>
+                                        <rect key="frame" x="10" y="0.0" width="304" height="68"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eyj-Ea-Ib4">
                                                 <rect key="frame" x="0.0" y="10" width="48" height="48"/>
@@ -115,7 +121,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ju-nF-Xpn">
-                                                <rect key="frame" x="63.999999999999986" y="10" width="48" height="48"/>
+                                                <rect key="frame" x="64" y="10" width="48" height="48"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="3e6-Qm-EZo"/>
@@ -127,8 +133,21 @@
                                                     <action selector="btnToggleVideoPressed:" destination="EvF-HB-Wij" eventType="touchUpInside" id="kmr-LE-qYU"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qeI-fx-f9l">
+                                            <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pkj-GS-Doz">
                                                 <rect key="frame" x="128" y="10" width="48" height="48"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="48" id="hX1-68-59B"/>
+                                                    <constraint firstAttribute="height" constant="48" id="p9L-zi-8uJ"/>
+                                                </constraints>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" image="switch_camera_icon.png"/>
+                                                <connections>
+                                                    <action selector="btnSwitchCameraPressed:" destination="EvF-HB-Wij" eventType="touchUpInside" id="sbK-TM-tLR"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qeI-fx-f9l">
+                                                <rect key="frame" x="192" y="10" width="48" height="48"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="Ttr-vw-73P"/>
@@ -141,7 +160,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TU5-P2-FjP">
-                                                <rect key="frame" x="192" y="10" width="48" height="48"/>
+                                                <rect key="frame" x="256" y="10" width="48" height="48"/>
                                                 <color key="backgroundColor" red="0.90196078431372551" green="0.11764705882352941" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="OMu-II-h6G"/>
@@ -162,7 +181,7 @@
                                     <constraint firstAttribute="height" constant="68" id="HH9-sA-lms"/>
                                     <constraint firstAttribute="trailing" secondItem="qK2-xH-wCI" secondAttribute="trailing" constant="10" id="TRD-E3-hFn"/>
                                     <constraint firstItem="qK2-xH-wCI" firstAttribute="leading" secondItem="IxI-aJ-B9k" secondAttribute="leading" constant="10" id="c2L-Ao-pP7"/>
-                                    <constraint firstAttribute="width" constant="260" id="eS2-Ib-b9o"/>
+                                    <constraint firstAttribute="width" constant="324" id="eS2-Ib-b9o"/>
                                     <constraint firstAttribute="bottom" secondItem="qK2-xH-wCI" secondAttribute="bottom" id="f1q-7w-Pbe"/>
                                 </constraints>
                             </view>
@@ -222,6 +241,7 @@
                         <outlet property="bottomActionView" destination="IxI-aJ-B9k" id="tCr-jM-8Yh"/>
                         <outlet property="btnAudioIcon" destination="Eyj-Ea-Ib4" id="4rg-lD-7bc"/>
                         <outlet property="btnChatIcon" destination="qeI-fx-f9l" id="U1Z-0x-jVW"/>
+                        <outlet property="btnSwitchCamera" destination="pkj-GS-Doz" id="NmI-lo-Lc0"/>
                         <outlet property="btnVideoIcon" destination="2ju-nF-Xpn" id="Qr2-Vx-GbO"/>
                         <outlet property="callDismissbtn" destination="TU5-P2-FjP" id="dlr-MV-j3c"/>
                         <outlet property="containerZoomView" destination="TyS-gL-FIX" id="1HI-0X-1Yx"/>
@@ -245,17 +265,41 @@
         <!--Zoom ChatVC-->
         <scene sceneID="ONj-TN-b4G">
             <objects>
-                <viewController storyboardIdentifier="ZoomChatVC" id="tXg-2I-c0P" customClass="ZoomChatVC" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ZoomChatVC" id="tXg-2I-c0P" customClass="ZoomChatVC" customModule="ZoomHelloWorldTwo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bZP-Ei-pbp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Pde-ER-Nk0">
-                                <rect key="frame" x="0.0" y="50" width="375" height="680"/>
+                                <rect key="frame" x="0.0" y="94" width="375" height="636"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F0y-O0-Jfd">
+                                <rect key="frame" x="0.0" y="50" width="375" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <items>
+                                    <navigationItem title="Chat" id="XjW-ip-SVu">
+                                        <barButtonItem key="leftBarButtonItem" style="plain" id="djQ-Hd-gEq">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="7AA-So-chA">
+                                                <rect key="frame" x="16" y="0.66666666666666785" width="84" height="43"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="15"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Dismiss">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="btnDismissPressed:" destination="tXg-2I-c0P" eventType="touchUpInside" id="v0S-7G-V9v"/>
+                                                </connections>
+                                            </button>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter message here...." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vEg-xF-8BO">
                                 <rect key="frame" x="20" y="744" width="290" height="34"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -265,11 +309,11 @@
                                     <constraint firstAttribute="width" constant="35" id="gos-nK-UeF"/>
                                     <constraint firstAttribute="height" constant="35" id="xkM-ns-JWL"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain">
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
                                     <imageReference key="image" image="paperplane.fill" catalog="system" symbolScale="large"/>
-                                    <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </buttonConfiguration>
+                                </state>
                                 <connections>
                                     <action selector="btnSendChatMessagePressed:" destination="tXg-2I-c0P" eventType="touchUpInside" id="cdb-qQ-KkE"/>
                                 </connections>
@@ -282,11 +326,14 @@
                             <constraint firstItem="vEg-xF-8BO" firstAttribute="bottom" secondItem="Xw6-Ao-3AZ" secondAttribute="bottom" id="Gyv-IS-TS6"/>
                             <constraint firstItem="Xw6-Ao-3AZ" firstAttribute="trailing" secondItem="PpF-av-R3q" secondAttribute="trailing" constant="20" id="Kma-Tf-4ym"/>
                             <constraint firstItem="vEg-xF-8BO" firstAttribute="leading" secondItem="Xw6-Ao-3AZ" secondAttribute="leading" constant="20" id="REK-R5-Mt2"/>
+                            <constraint firstItem="F0y-O0-Jfd" firstAttribute="leading" secondItem="Xw6-Ao-3AZ" secondAttribute="leading" id="Uu6-GU-Anj"/>
                             <constraint firstItem="PpF-av-R3q" firstAttribute="top" secondItem="Pde-ER-Nk0" secondAttribute="bottom" constant="10" id="W4x-0V-TAd"/>
-                            <constraint firstItem="Pde-ER-Nk0" firstAttribute="top" secondItem="Xw6-Ao-3AZ" secondAttribute="top" id="XET-4v-28t"/>
+                            <constraint firstItem="Pde-ER-Nk0" firstAttribute="top" secondItem="F0y-O0-Jfd" secondAttribute="bottom" id="aqb-OQ-bhN"/>
+                            <constraint firstItem="F0y-O0-Jfd" firstAttribute="trailing" secondItem="Xw6-Ao-3AZ" secondAttribute="trailing" id="cMB-BI-uew"/>
                             <constraint firstItem="vEg-xF-8BO" firstAttribute="top" secondItem="Pde-ER-Nk0" secondAttribute="bottom" constant="14" id="ofd-dE-BLx"/>
                             <constraint firstItem="Xw6-Ao-3AZ" firstAttribute="trailing" secondItem="Pde-ER-Nk0" secondAttribute="trailing" id="sKc-BY-GTo"/>
                             <constraint firstItem="PpF-av-R3q" firstAttribute="leading" secondItem="vEg-xF-8BO" secondAttribute="trailing" constant="10" id="tAp-RL-hcC"/>
+                            <constraint firstItem="F0y-O0-Jfd" firstAttribute="top" secondItem="Xw6-Ao-3AZ" secondAttribute="top" id="uoj-ny-dnd"/>
                         </constraints>
                     </view>
                     <connections>
@@ -297,16 +344,17 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Vg-ar-AlN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1783" y="11"/>
+            <point key="canvasLocation" x="1781.5999999999999" y="10.344827586206897"/>
         </scene>
     </scenes>
     <resources>
-        <image name="call_drop_icon.png" width="128" height="128"/>
-        <image name="call_timer_green_icon.png" width="128" height="128"/>
-        <image name="chat_icon.png" width="128" height="128"/>
-        <image name="default_avatar.png" width="128" height="128"/>
-        <image name="mic_enable_icon.png" width="128" height="128"/>
+        <image name="call_drop_icon.png" width="18" height="18"/>
+        <image name="call_timer_green_icon.png" width="8.3333330154418945" height="8.3333330154418945"/>
+        <image name="chat_icon.png" width="24" height="24"/>
+        <image name="default_avatar.png" width="512" height="512"/>
+        <image name="mic_enable_icon.png" width="24" height="24"/>
         <image name="paperplane.fill" catalog="system" width="128" height="119"/>
-        <image name="video_enable_icon.png" width="128" height="128"/>
+        <image name="switch_camera_icon.png" width="24" height="24"/>
+        <image name="video_enable_icon.png" width="24" height="24"/>
     </resources>
 </document>

@@ -55,10 +55,20 @@ extension ChatTableHandler:UITableViewDataSource{
         let msg = self.messages[indexPath.row];
         cell.lblUsername.text = msg.senderUser?.getName() ?? "unknown";
         cell.lblChatContent.text = msg.content ?? "N/A";
-        cell.lblTime.text =  "--";
+        cell.lblTime.text = Date(timeIntervalSince1970: TimeInterval(msg.timeStamp)).getStringFromDate();
         //Date(timeIntervalSince1970: TimeInterval(msg.timeStamp)).formatted(.dateTime);
         return cell;
         
+    }
+}
+
+
+extension Date{
+    func getStringFromDate() -> String{
+        let dateFormatter = DateFormatter();
+        dateFormatter.dateFormat = "dd/MM/yyyy, hh:mm:ss a";
+        dateFormatter.locale = Locale(identifier: "en_US");
+        return dateFormatter.string(from: self);
     }
 }
 

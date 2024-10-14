@@ -27,6 +27,7 @@ class ConsulationMeetingVC: BupaBaseVC {
     @IBOutlet private weak var zoomView:ZoomView!
     
     @IBOutlet private weak var callDismissbtn:UIButton!
+    @IBOutlet private weak var btnSwitchCamera:UIButton!
     @IBOutlet private weak var btnAudioIcon:UIButton!
     @IBOutlet private weak var btnVideoIcon:UIButton!
     @IBOutlet private weak var btnChatIcon:UIButton!
@@ -120,7 +121,7 @@ private extension ConsulationMeetingVC{
             self.btnVideoIcon.isSelected = false;
             ZoomVideoSDK.shareInstance()?.getVideoHelper()?.stopVideo();
             self.meUserPlaceHolderIcon.isHidden = false;
-            //self.btnVideoIcon.setImage(UIImage(systemName: "video.slash"), for: .normal)
+            self.btnVideoIcon.setImage(UIImage(named: "video_disable_icon"), for: .normal)
         }
         else{
             self.btnVideoIcon.isSelected = true;
@@ -178,6 +179,7 @@ private extension ConsulationMeetingVC{
         self.btnAudioIcon.roundEdges();
         self.btnChatIcon.roundEdges();
         self.btnVideoIcon.roundEdges();
+        self.btnSwitchCamera.roundEdges();
         self.bottomActionView.roundEdges(radius: 34.0)
         
         self.timerView.roundEdges(radius: 17.5);
@@ -234,14 +236,14 @@ private extension ConsulationMeetingVC{
         let user = ZoomVideoSDK.shareInstance()?.getSession()?.getMySelf();
         if(user?.audioStatus()?.audioType != ZoomVideoSDKAudioType.none){
             if(user?.audioStatus()?.isMuted ?? true){
-                //self.btnAudioIcon.setImage(UIImage(systemName: "mic.slash"), for: .normal);
+                self.btnAudioIcon.setImage(UIImage(named: "mic_disable_icon"), for: .normal);
             }
             else{
-                //self.btnAudioIcon.setImage(UIImage(named: "mic_enable_icon"), for: .normal);
+                self.btnAudioIcon.setImage(UIImage(named: "mic_enable_icon"), for: .normal);
             }
         }
         else{
-           // self.btnAudioIcon.setImage(UIImage(systemName: "mic.slash"), for: .normal);
+            self.btnAudioIcon.setImage(UIImage(named: "mic_disable_icon"), for: .normal);
         }
         
     }

@@ -33,6 +33,11 @@ final class ZoomChatVC: BupaBaseVC {
         self.methodsOnViewLoaded()
     }
     
+    
+    @IBAction func btnDismissPressed(_ sender:UIButton){
+        self.dismiss(animated: true);
+    }
+    
     override func keyboardWillChangeFrame(to frame: CGRect) {
         if(frame != CGRect.zero){
             self.bottomConstraint.constant = -(frame.height - AppConstants.safeArea.bottom);
